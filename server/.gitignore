@@ -1,0 +1,11 @@
+# 忽略 Cargo 构建生成的文件
+target/
+
+# 忽略日志文件
+*.log
+
+# 忽略编译过程中的临时文件
+build/
+
+# 忽略 Cargo.lock 文件
+Cargo.lock
