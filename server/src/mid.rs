@@ -6,6 +6,7 @@ use axum::{
 };
 use std::net::SocketAddr;
 
+#[allow(dead_code)]
 pub async fn restrict_to_localhost(req: Request<Body>, next: Next) -> Response {
     if let Some(addr) = req.extensions().get::<SocketAddr>() {
         if addr.ip().is_loopback() {
