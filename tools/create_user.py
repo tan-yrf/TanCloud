@@ -1,6 +1,7 @@
 import sqlite3
 import argparse
 import shutil
+import time  
 
 # 设置命令行参数解析
 parser = argparse.ArgumentParser(description="Create a new user in the database.")
@@ -9,14 +10,12 @@ args = parser.parse_args()
 
 # 使用传入的数据库路径连接到 SQLite 数据库
 conn = sqlite3.connect(args.db_path)
-
-# 创建一个 cursor
 cursor = conn.cursor()
 
-# 如果用户表不存在，就创建一个
+# 如果用户表不存在，就创建一个，id 字段将使用时间戳作为主键
 cursor.execute(''' 
 CREATE TABLE IF NOT EXISTS user (
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY,  
     name TEXT NOT NULL,
     password TEXT NOT NULL,
     space INTEGER NOT NULL
@@ -50,11 +49,14 @@ except ValueError:
     print("Space must be an integer.")
     exit(1)
 
-# 插入用户数据
+# 获取当前时间戳
+timestamp = int(time.time())  
+
+# 插入用户数据，使用时间戳作为 id
 try:
-    cursor.execute('''
-    INSERT INTO user (name, password, space) VALUES (?, ?, ?)
-    ''', (username, password, space))  # 直接存储明文密码
+    cursor.execute(''' 
+    INSERT INTO user (id, name, password, space) VALUES (?, ?, ?, ?)
+    ''', (timestamp, username, password, space))  # 传入时间戳作为 id
     conn.commit()
     print(f"User '{username}' created successfully with cloud space of {space} GB.")
 except sqlite3.Error as e:
