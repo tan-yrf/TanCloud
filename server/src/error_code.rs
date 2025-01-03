@@ -3,20 +3,22 @@ use serde::Serialize;
 #[derive(Serialize, Clone, Copy)]
 #[allow(dead_code)]
 pub enum ErrorCode {
+    Unknown = -1,
     Success = 0,
 
     // 用户相关
-    UserCreatedScuccess = 10000,
-    UserCreateFailed = 10001,
+    UserNotExists = 10001,          // 用户不存在
+    PasswordError = 10002,          // 密码错误  
 }
 
 impl ErrorCode {
     pub fn message(&self) -> &str {
         match self {
+            ErrorCode::Unknown => "未知错误",
             ErrorCode::Success => "成功",
 
-            ErrorCode::UserCreatedScuccess => "用户创建成功",
-            ErrorCode::UserCreateFailed => "用户创建失败",
+            ErrorCode::UserNotExists => "用户不存在",
+            ErrorCode::PasswordError => "密码错误",
         }
     }
 }
