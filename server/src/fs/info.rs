@@ -1,8 +1,13 @@
-use axum::{response::IntoResponse, Json, http::StatusCode};
+use axum::{
+    extract::Json,
+    response::{IntoResponse},
+    http::{ StatusCode, HeaderMap,},
+};
+
 use serde::{Deserialize, Serialize};
 use serde_json::json;
-use std::fs::{read_dir, metadata};
 use std::path::Path;
+use std::fs::{read_dir, metadata};
 use std::io;
 use std::time::{SystemTime, UNIX_EPOCH};
 
@@ -19,6 +24,22 @@ pub struct FileInfo {
     pub last_modify_time: i64,
 }
 
+
+pub async fn handle_get_directory_info(
+    headers: HeaderMap,
+    Json(path_str): Json<String>
+) -> impl IntoResponse {
+
+    let path = Path::new(&path_str);
+    let response = match get_directory_info(path) {
+        Ok(files_info) => HttpResponse::new(ErrorCode::Success, json!(files_info)),
+        Err(_) => HttpResponse::new(ErrorCode::Unknown, json!({})),
+    };
+
+    (StatusCode::OK, Json(response))
+}
+
+
 // 将系统时间转换为时间戳
 fn system_time_to_timestamp(time: SystemTime) -> i64 {
     match time.duration_since(UNIX_EPOCH) {
@@ -28,7 +49,7 @@ fn system_time_to_timestamp(time: SystemTime) -> i64 {
 }
 
 // 获取目录中所有文件和文件夹的信息
-pub fn get_directory_info(path: &Path) -> io::Result<Vec<FileInfo>> {
+fn get_directory_info(path: &Path) -> io::Result<Vec<FileInfo>> {
     let mut files_info = Vec::new();
 
     if path.is_dir() {
@@ -59,11 +80,3 @@ pub fn get_directory_info(path: &Path) -> io::Result<Vec<FileInfo>> {
     Ok(files_info)
 }
 
-pub async fn handle_get_directory_info(Json(path_str): Json<String>) -> impl IntoResponse {
-    let path = Path::new(&path_str);
-    let response = match get_directory_info(path) {
-        Ok(files_info) => HttpResponse::new(ErrorCode::Success, json!(files_info)),
-        Err(_) => HttpResponse:: new(ErrorCode::Unknown, json!({})),
-    };
-    (StatusCode::OK, Json(response))
-}
