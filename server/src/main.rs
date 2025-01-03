@@ -3,7 +3,7 @@ mod http_response;
 mod mid;
 mod config;
 mod user;
-
+mod fs;
 
 use axum::{ routing::{post}, response::IntoResponse, Json, Router};
 use tracing_subscriber;
@@ -38,7 +38,8 @@ async fn main() {
     // 构建路由
     let app = Router::new()
         .route("/TanCloud", post(root))
-        .nest("/TanCloud/user", user::user_routes());
+        .nest("/TanCloud/user", user::user_routes())
+        .nest("/TanCloud/fs", fs::fs_routes());
 
     // 使用 hyper 运行服务
     let listener = tokio::net::TcpListener::bind("0.0.0.0:52996")

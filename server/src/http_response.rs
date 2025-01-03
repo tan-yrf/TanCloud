@@ -8,7 +8,6 @@ pub struct HttpResponse<T>{
     pub body: T,
 }
 
-#[allow(dead_code)]
 impl<T> HttpResponse<T> {
     pub fn new(code: ErrorCode, body: T) -> Self {
         HttpResponse::<T>{

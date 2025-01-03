@@ -63,42 +63,22 @@ pub async fn login(user: Json<User>) -> impl IntoResponse {
                 // 校验通过，创建用户的目录结构
                 if let Some(user_id) = user_data.id {
                     create_user_folder(user_id).await;
-                    HttpResponse {
-                        code: ErrorCode::Success as i32,
-                        message: ErrorCode::Success.message().to_string(),
-                        body: json!({ "user_id": user_id }),
-                    }
+                    HttpResponse::new(ErrorCode::Success, json!({ "user_id": user_id }))
                 } else {
-                    HttpResponse {
-                        code: ErrorCode::Unknown as i32,
-                        message: ErrorCode::Unknown.message().to_string(),
-                        body: json!({}),
-                    }
+                    HttpResponse::new(ErrorCode::Unknown, json!({}))
                 }
             } else {
                 // 密码错误
-                HttpResponse {
-                    code: ErrorCode::PasswordError as i32,
-                    message: ErrorCode::PasswordError.message().to_string(),
-                    body: json!({}),
-                }
+                HttpResponse::new(ErrorCode::PasswordError, json!({}))
             }
         },
         Err(Error::RowNotFound) => {
             // 用户名不存在
-            HttpResponse {
-                code: ErrorCode::UserNotExists as i32,
-                message: ErrorCode::UserNotExists.message().to_string(),
-                body: json!({}),
-            }
+            HttpResponse::new(ErrorCode::UserNotExists, json!({}))
         },
         Err(_e) => {
             // 其他数据库错误
-            HttpResponse {
-                code: ErrorCode::Unknown as i32,
-                message: ErrorCode::Unknown.message().to_string(),
-                body: json!({}),
-            }
+            HttpResponse::new(ErrorCode::Unknown, json!({}))
         }
     };
 
