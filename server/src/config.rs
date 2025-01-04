@@ -16,7 +16,6 @@ pub async fn init_db(db_path: &str) {
     let db_path = PathBuf::from(db_path);
     info!("Initializing database at: {}", db_path.display());
 
-    // 创建数据库连接池
     let pool = SqlitePool::connect(&format!("sqlite://{}", db_path.display()))
         .await
         .unwrap_or_else(|_| panic!("Failed to create database connection pool"));
@@ -24,7 +23,6 @@ pub async fn init_db(db_path: &str) {
     // 确保池只初始化一次
     DB_POOL.set(pool).expect("Failed to initialize the database pool");
 
-    // 执行数据库初始化操作
     let res = sqlx::query(
         r#"
         CREATE TABLE IF NOT EXISTS user (
