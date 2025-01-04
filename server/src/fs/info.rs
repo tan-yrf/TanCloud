@@ -1,7 +1,7 @@
 use axum::{
-    extract::Json,
+    extract::{Json, Extension},
     response::{IntoResponse},
-    http::{ StatusCode, HeaderMap,},
+    http::StatusCode,
 };
 
 use serde::{Deserialize, Serialize};
@@ -13,6 +13,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 use crate::http_response::HttpResponse;
 use crate::error_code::ErrorCode;
+use crate::mid::UserInfo;
 
 #[derive(Deserialize, Serialize)]
 pub struct FileInfo {
@@ -26,7 +27,7 @@ pub struct FileInfo {
 
 
 pub async fn handle_get_directory_info(
-    headers: HeaderMap,
+    Extension(user_info): Extension<UserInfo>,
     Json(path_str): Json<String>
 ) -> impl IntoResponse {
 

@@ -22,6 +22,7 @@ pub struct User {
     pub space: Option<i64>, // 云空间大小
 }
 
+// 创建用户空间所需的文件夹
 async fn create_user_folder(user_id: i64) {
     let user_dir = WORK_DIR.join(user_id.to_string());
     let trash_dir = user_dir.join("trash");
@@ -48,7 +49,7 @@ pub async fn login(user: Json<User>) -> impl IntoResponse {
     // 首先查找用户名是否存在
     let res = sqlx::query_as::<_, User>(
         r#"
-        SELECT id, name, password, space FROM user
+        SELECT * FROM user
         WHERE name = ?
         "#,
     )
