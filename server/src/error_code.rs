@@ -9,6 +9,9 @@ pub enum ErrorCode {
     // 用户相关
     UserNotExists = 10001,          // 用户不存在
     PasswordError = 10002,          // 密码错误  
+
+    // 文件相关
+    InvalidPath = 20001,            // 无效路径
 }
 
 impl ErrorCode {
@@ -19,6 +22,8 @@ impl ErrorCode {
 
             ErrorCode::UserNotExists => "用户不存在",
             ErrorCode::PasswordError => "密码错误",
+
+            ErrorCode::InvalidPath => "无效路径",
         }
     }
 }
