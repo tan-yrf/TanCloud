@@ -1,28 +1,18 @@
-use axum::{
-    extract::Json,
-    response::IntoResponse,
-    http::StatusCode,
-};
-use serde_json::json;
 use std::fs;
 use std::path::PathBuf;
-use crate::error_code::ErrorCode;
 use crate::WORK_DIR;
-use crate::http_response::HttpResponse;
 
 
 // 非法字符集合
-const ILLEGAL_CHARS: &[char] = &['\\', '/', ':', '*', '?', '"', '<', '>', '|'];
+pub const ILLEGAL_CHARS: &[char] = &['\\', '/', ':', '*', '?', '"', '<', '>', '|'];
 
 pub struct VerifyResult {
     pub root_path: PathBuf,
     pub target: PathBuf,
 }
 
-// 校验路径,成功返回完整目标路径,失败返回响应结构体
+// 校验路径(路径是否合法,路径对应的资源是否存在),成功返回完整目标路径,失败返回响应结构体
 pub fn verify_path(path: String, user_id: String) -> Result<VerifyResult, ()> {
-    let response = HttpResponse::new(ErrorCode::InvalidPath, json!({}));
-    
     if path.contains("..") || ILLEGAL_CHARS.iter().any(|&c| path.contains(c)) {
         return Err(());
     }

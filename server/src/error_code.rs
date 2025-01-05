@@ -12,6 +12,8 @@ pub enum ErrorCode {
 
     // 文件相关
     InvalidPath = 20001,            // 无效路径
+    RenameFailed = 20002,           // 重命名失败
+    RenameSuccess = 20003,          // 重命名成功
 }
 
 impl ErrorCode {
@@ -24,6 +26,8 @@ impl ErrorCode {
             ErrorCode::PasswordError => "密码错误",
 
             ErrorCode::InvalidPath => "无效路径",
+            ErrorCode::RenameFailed => "重命名失败",
+            ErrorCode::RenameSuccess => "重命名成功",
         }
     }
 }
