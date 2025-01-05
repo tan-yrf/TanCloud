@@ -3,17 +3,18 @@ use axum::{
     response::{IntoResponse},
     http::StatusCode,
 };
-
 use serde::{Deserialize, Serialize};
 use serde_json::json;
-use std::path::Path;
+use std::path::{PathBuf};
 use std::fs::{read_dir, metadata};
 use std::io;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use crate::http_response::HttpResponse;
+use crate::WORK_DIR;
 use crate::error_code::ErrorCode;
 use crate::mid::UserInfo;
+use crate::fs::tools::{verify_path, VerifyResult};
 
 #[derive(Deserialize, Serialize)]
 pub struct FileInfo {
@@ -25,15 +26,25 @@ pub struct FileInfo {
     pub last_modify_time: i64,
 }
 
+#[derive(Deserialize)]
+pub struct RequestInfo {
+    pub path: String,
+}
 
 pub async fn handle_get_directory_info(
     Extension(user_info): Extension<UserInfo>,
-    Json(path_str): Json<String>
+    Json(request_info): Json<RequestInfo>
 ) -> impl IntoResponse {
-
-    let path = Path::new(&path_str);
-    let response = match get_directory_info(path) {
-        Ok(files_info) => HttpResponse::new(ErrorCode::Success, json!(files_info)),
+    let verify_res = match verify_path(request_info.path, user_info.id.to_string()) {
+        Ok(res) => res,
+        Err(_) => return {
+            let response = HttpResponse::new(ErrorCode::InvalidPath, json!({}));
+            return (StatusCode::OK, Json(response))
+        }
+    };
+  
+    let response = match get_directory_info(verify_res.root_path, verify_res.target) {
+        Ok(vec_files_info) => HttpResponse::new(ErrorCode::Success, json!(vec_files_info)),
         Err(_) => HttpResponse::new(ErrorCode::Unknown, json!({})),
     };
 
@@ -50,7 +61,7 @@ fn system_time_to_timestamp(time: SystemTime) -> i64 {
 }
 
 // 获取目录中所有文件和文件夹的信息
-fn get_directory_info(path: &Path) -> io::Result<Vec<FileInfo>> {
+fn get_directory_info(root_path: PathBuf, path: PathBuf) -> io::Result<Vec<FileInfo>> {
     let mut files_info = Vec::new();
 
     if path.is_dir() {
@@ -67,8 +78,13 @@ fn get_directory_info(path: &Path) -> io::Result<Vec<FileInfo>> {
             };
             let last_modify_time = system_time_to_timestamp(metadata.modified()?);
 
+            let relative_path = entry.path().strip_prefix(root_path.clone())
+                .unwrap_or(entry.path().as_path())
+                .to_string_lossy()
+                .to_string();
+
             files_info.push(FileInfo {
-                path: entry.path().to_string_lossy().to_string(),
+                path: relative_path,
                 name: file_name,
                 is_dir,
                 size,
