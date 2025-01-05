@@ -23,6 +23,8 @@ pub static WORK_DIR: Lazy<PathBuf> = Lazy::new(|| {
 
 #[tokio::main]
 async fn main() {
+    // todo: 后面把配置项通过配置文件来设置
+    
     let args: Vec<String> = env::args().collect();
     if args.len() < 3 {
         std::process::exit(1);
