@@ -46,7 +46,6 @@ pub async fn login(user: Json<User>) -> impl IntoResponse {
     let pool = get_db_pool();
     let user = user.0;
 
-    // 首先查找用户名是否存在
     let res = sqlx::query_as::<_, User>(
         r#"
         SELECT * FROM user
@@ -57,14 +56,14 @@ pub async fn login(user: Json<User>) -> impl IntoResponse {
     .fetch_one(pool)
     .await;
 
+    // 用户名存在就验证密码，其他情况返回对应错误
     let response = match res {
         Ok(user_data) => {
-            // 用户名存在，验证密码是否正确
             if user_data.password == user.password {
                 // 校验通过，创建用户的目录结构
                 if let Some(user_id) = user_data.id {
                     create_user_folder(user_id).await;
-                    HttpResponse::new(ErrorCode::Success, json!({ "user_id": user_id }))
+                    HttpResponse::new(ErrorCode::Success, json!({ "token": user_id }))
                 } else {
                     HttpResponse::new(ErrorCode::Unknown, json!({}))
                 }
