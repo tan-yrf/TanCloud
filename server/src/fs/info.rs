@@ -11,10 +11,9 @@ use std::io;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use crate::http_response::HttpResponse;
-use crate::WORK_DIR;
 use crate::error_code::ErrorCode;
 use crate::mid::UserInfo;
-use crate::fs::tools::{verify_path, VerifyResult};
+use crate::fs::tools::{verify_path};
 
 #[derive(Deserialize, Serialize)]
 pub struct FileInfo {
@@ -31,13 +30,14 @@ pub struct RequestInfo {
     pub path: String,
 }
 
+// 处理获取目录信息请求
 pub async fn handle_get_directory_info(
     Extension(user_info): Extension<UserInfo>,
     Json(request_info): Json<RequestInfo>
 ) -> impl IntoResponse {
     let verify_res = match verify_path(request_info.path, user_info.id.to_string()) {
         Ok(res) => res,
-        Err(_) => return {
+        Err(_) => {
             let response = HttpResponse::new(ErrorCode::InvalidPath, json!({}));
             return (StatusCode::OK, Json(response))
         }
