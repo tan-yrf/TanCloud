@@ -49,6 +49,9 @@ except ValueError:
     print("Space must be an integer.")
     exit(1)
 
+# 将 GB 转换为字节
+space_byte = space * (2**30)
+
 # 获取当前时间戳
 timestamp = int(time.time())  
 
@@ -56,7 +59,7 @@ timestamp = int(time.time())
 try:
     cursor.execute(''' 
     INSERT INTO user (id, name, password, space) VALUES (?, ?, ?, ?)
-    ''', (timestamp, username, password, space))  # 传入时间戳作为 id
+    ''', (timestamp, username, password, space_byte))  # 传入时间戳作为 id
     conn.commit()
     print(f"User '{username}' created successfully with cloud space of {space} GB.")
 except sqlite3.Error as e:
