@@ -86,17 +86,14 @@ fn copy_recursively(source: PathBuf, destination: PathBuf) -> io::Result<()> {
         return Err(Error::new(ErrorKind::NotFound, "Source path not found"));
     }
 
-    // 如果目标路径不存在，创建目标路径
     if destination.exists() == false {
         create_dir_all(&destination)?;
     }
 
-    // 如果源路径是文件，则直接拷贝到目标路径
     if source.is_file() {
         let target_file_path = destination.join(source.file_name().unwrap());
         copy(&source, target_file_path)?;
     } else if source.is_dir() {
-        // 遍历源目录中的每个条目，递归拷贝文件或子目录
         for entry in read_dir(&source)? {
             let entry = entry?;
             let entry_path = entry.path();
