@@ -18,6 +18,9 @@ pub enum ErrorCode {
     PathExists = 20005,             // 路径已存在
     CreateDirFailed = 20006,        // 创建目录失败
     MoveFailed = 20007,             // 移动失败
+    DeleteFailed = 20008,           // 删除失败
+    ValidataName = 20009,           // 非法名称
+    WriteFailed = 200010,           // 写入失败
 }
 
 impl ErrorCode {
@@ -36,6 +39,9 @@ impl ErrorCode {
             ErrorCode::PathExists => "路径已存在",
             ErrorCode::CreateDirFailed => "创建目录失败",
             ErrorCode::MoveFailed => "移动失败",
+            ErrorCode::DeleteFailed => "删除失败",
+            ErrorCode::ValidataName => "非法名称",
+            ErrorCode::WriteFailed => "写入失败",
         }
     }
 }
