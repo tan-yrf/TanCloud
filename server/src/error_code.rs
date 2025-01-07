@@ -14,6 +14,10 @@ pub enum ErrorCode {
     InvalidPath = 20001,            // 无效路径
     RenameFailed = 20002,           // 重命名失败
     RenameSuccess = 20003,          // 重命名成功
+    CopyFailed = 20004,             // 复制失败
+    PathExists = 20005,             // 路径已存在
+    CreateDirFailed = 20006,        // 创建目录失败
+    MoveFailed = 20007,             // 移动失败
 }
 
 impl ErrorCode {
@@ -28,6 +32,10 @@ impl ErrorCode {
             ErrorCode::InvalidPath => "无效路径",
             ErrorCode::RenameFailed => "重命名失败",
             ErrorCode::RenameSuccess => "重命名成功",
+            ErrorCode::CopyFailed => "复制失败",
+            ErrorCode::PathExists => "路径已存在",
+            ErrorCode::CreateDirFailed => "创建目录失败",
+            ErrorCode::MoveFailed => "移动失败",
         }
     }
 }

@@ -24,7 +24,7 @@ pub async fn handle_rename(
     Extension(user_info): Extension<UserInfo>,
     Json(request_rename): Json<RequestRename>
 ) -> impl IntoResponse {
-    let verify_res = match verify_path(request_rename.path.clone(), user_info.id.to_string()) {
+    let verify_res = match verify_path(&request_rename.path, &user_info.id.to_string()) {
         Ok(res) => res,
         Err(_) => {
             let response = HttpResponse::new(ErrorCode::InvalidPath, json!({}));

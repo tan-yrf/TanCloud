@@ -35,7 +35,7 @@ pub async fn handle_get_directory_info(
     Extension(user_info): Extension<UserInfo>,
     Json(request_info): Json<RequestInfo>
 ) -> impl IntoResponse {
-    let verify_res = match verify_path(request_info.path, user_info.id.to_string()) {
+    let verify_res = match verify_path(&request_info.path, &user_info.id.to_string()) {
         Ok(res) => res,
         Err(_) => {
             let response = HttpResponse::new(ErrorCode::InvalidPath, json!({}));
