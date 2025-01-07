@@ -1,4 +1,4 @@
-use std::fs;
+use std::fs::metadata;
 use std::path::PathBuf;
 use crate::WORK_DIR;
 
@@ -21,9 +21,27 @@ pub fn verify_path(path: &String, user_id: &String) -> Result<VerifyResult, ()> 
         root_path: WORK_DIR.join(user_id.clone()).join("root"),
         target: WORK_DIR.join(user_id).join("root").join(path),
     };
-    if fs::metadata(&res.target).is_ok() {
+    if metadata(&res.target).is_ok() {
         Ok(res)
     } else {
         Err(())
     }
+}
+
+// 检查新名称是否包含非法字符,以及目标路径下是否存在同名文件
+pub fn validate_new_name(target: &PathBuf, new_name: &String) -> Result<(), ()> {
+    if new_name.is_empty() {
+        return Err(());
+    }
+    
+    if ILLEGAL_CHARS.iter().any(|&c| new_name.contains(c)) {
+        return Err(());
+    }
+
+    let new_path = target.join(new_name);
+    if metadata(&new_path).is_ok() {
+        return Err(());
+    }
+
+    Ok(())
 }

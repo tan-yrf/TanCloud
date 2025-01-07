@@ -6,12 +6,12 @@ use axum::{
 use serde::{Deserialize};
 use serde_json::json;
 use std::path::{PathBuf};
-use std::fs::{metadata, rename};
+use std::fs::rename;
 
 use crate::http_response::HttpResponse;
 use crate::error_code::ErrorCode;
 use crate::mid::UserInfo;
-use crate::fs::tools::{verify_path, ILLEGAL_CHARS};
+use crate::fs::tools::{verify_path, validate_new_name};
 
 #[derive(Deserialize)]
 pub struct RequestRename {
@@ -51,24 +51,6 @@ pub async fn handle_rename(
     }
 }
 
-// 检查新名称是否包含非法字符,以及目标路径下是否存在同名文件
-fn validate_new_name(target: &PathBuf, new_name: &str) -> Result<(), ()> {
-    if new_name.is_empty() {
-        return Err(());
-    }
-    
-    if ILLEGAL_CHARS.iter().any(|&c| new_name.contains(c)) {
-        return Err(());
-    }
-
-    let parent = target.parent().unwrap_or_else(|| target);
-    let new_path = parent.join(new_name);
-    if metadata(&new_path).is_ok() {
-        return Err(());
-    }
-
-    Ok(())
-}
 
 // 重命名文件
 async fn rename_file(target: PathBuf, new_name: String) -> Result<(), ()> {
