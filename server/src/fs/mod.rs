@@ -10,7 +10,8 @@ mod upload;
 use axum::{
     Router, 
     routing::post,
-    middleware::from_extractor,
+    middleware::{from_extractor},
+    extract::DefaultBodyLimit,
 };
 use crate::mid::RequireAuth;
 
@@ -23,5 +24,6 @@ pub fn fs_routes() -> Router {
         .route("/move", post(m_move::handle_move))
         .route("/delete", post(delete::handle_delete))
         .route("/upload", post(upload::handle_upload))
-        .route_layer(from_extractor::<RequireAuth>())
+        .layer(from_extractor::<RequireAuth>())
+        .layer(DefaultBodyLimit::max(10 * 1024 * 1024 * 1024))
 }
