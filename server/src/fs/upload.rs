@@ -26,6 +26,8 @@ pub async fn handle_upload (
     let mut target: String = String::from("?");
     let mut name: String = String::from("?");
     let mut size: i64 = i64::MAX;
+    let mut file_path: Option<PathBuf> = None;
+    let mut written_size: i64 = 0;
 
     while let Some(mut field) = multipart.next_field().await.unwrap() {
         match field.name() {
@@ -44,20 +46,21 @@ pub async fn handle_upload (
 
                 // 校验文件名是否合法
                 if let Err(_) = validate_new_name(&verify_path_res.target, &name) {
-                    let response = HttpResponse::new(ErrorCode::InvalidPath, json!({}));
+                    let response = HttpResponse::new(ErrorCode::ValidataName, json!({}));
                     return (StatusCode::OK, Json(response));
                 }
 
                 // 校验上传的文件大小是否超出限制
                 let available_size = user_info.space - calculate_dir_size(&verify_path_res.root_path);
                 if size > available_size {
-                    let response = HttpResponse::new(ErrorCode::InvalidPath, json!({}));
+                    let response = HttpResponse::new(ErrorCode::OutSize, json!({}));
                     return (StatusCode::OK, Json(response));
                 }
 
                 // 上传文件
-                let file_path = verify_path_res.target.join(&name);
-                let mut file = match OpenOptions::new().create(true).write(true).open(&file_path) {
+                let path = verify_path_res.target.clone().join(name.clone());
+                file_path = Some(path.clone());
+                let mut file = match OpenOptions::new().create(true).write(true).open(file_path.as_ref().unwrap()) {
                     Ok(f) => f,
                     Err(_) => {
                         let response = HttpResponse::new(ErrorCode::WriteFailed, json!({}));
@@ -65,17 +68,41 @@ pub async fn handle_upload (
                     }
                 };
 
+                const MAX_CHUNK_SIZE: usize = 4 * 1024 * 1024; // 4 MB
+                let mut buffer: Vec<u8> = Vec::with_capacity(MAX_CHUNK_SIZE);
+
                 // 分块写入
                 while let Some(chunk) = field.chunk().await.unwrap() {
-                    if let Err(_) = file.write_all(&chunk) {
-                        let response = HttpResponse::new(ErrorCode::WriteFailed, json!({}));
-                        return (StatusCode::OK, Json(response));
+                    buffer.extend_from_slice(&chunk);
+                    if buffer.len() >= MAX_CHUNK_SIZE {
+                        if let Err(_) = file.write_all(&buffer) {
+                            let response = HttpResponse::new(ErrorCode::WriteFailed, json!({}));
+                            return (StatusCode::OK, Json(response));
+                        }
+                        written_size += buffer.len() as i64;
+                        buffer.clear();
                     }
                 }
 
+                // 如果最后还有剩余的数据，写入文件
+                if buffer.is_empty() == false {
+                    if let Err(_) = file.write_all(&buffer) {
+                        let response = HttpResponse::new(ErrorCode::WriteFailed, json!({}));
+                        return (StatusCode::OK, Json(response));
+                    }
+                    written_size += buffer.len() as i64;
+                }
             }
             _ => {}
         }
+    }
+
+    if name.is_empty() || size == i64::MAX || size != written_size {
+        if let Some(path) = file_path {
+            let _ = fs::remove_file(path);
+        }
+        let response = HttpResponse::new(ErrorCode::MissField, json!({}));
+        return (StatusCode::OK, Json(response));
     }
 
     let response = HttpResponse::new(ErrorCode::Success, json!({}));
