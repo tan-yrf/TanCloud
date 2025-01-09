@@ -20,7 +20,9 @@ pub enum ErrorCode {
     MoveFailed = 20007,             // 移动失败
     DeleteFailed = 20008,           // 删除失败
     ValidataName = 20009,           // 非法名称
-    WriteFailed = 200010,           // 写入失败
+    WriteFailed = 20010,            // 写入失败
+    MissField = 20011,              // 缺失字段 
+    OutSize = 20012,                // 文件大小超出限制
 }
 
 impl ErrorCode {
@@ -42,6 +44,8 @@ impl ErrorCode {
             ErrorCode::DeleteFailed => "删除失败",
             ErrorCode::ValidataName => "非法名称",
             ErrorCode::WriteFailed => "写入失败",
+            ErrorCode::MissField => "缺失字段",
+            ErrorCode::OutSize => "文件大小超出限制",
         }
     }
 }
