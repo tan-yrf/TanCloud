@@ -19,8 +19,9 @@ pub fn verify_path(path: &String, user_id: &String) -> Result<VerifyResult, ()> 
 
     let res = VerifyResult {
         root_path: WORK_DIR.join(user_id.clone()).join("root"),
-        target: WORK_DIR.join(user_id).join("root").join(path),
+        target: WORK_DIR.join(user_id.clone()).join("root").join(path),
     };
+    //println!("root {},  target {}", res.root_path.to_string_lossy(), res.target.to_string_lossy());
     if metadata(&res.target).is_ok() {
         Ok(res)
     } else {
