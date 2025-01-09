@@ -6,6 +6,7 @@ mod m_move;
 mod delete;
 mod create;
 mod upload;
+mod download;
 
 use axum::{
     Router, 
@@ -24,6 +25,7 @@ pub fn fs_routes() -> Router {
         .route("/move", post(m_move::handle_move))
         .route("/delete", post(delete::handle_delete))
         .route("/upload", post(upload::handle_upload))
+        .route("/download", post(download::handle_download))
         .layer(from_extractor::<RequireAuth>())
         .layer(DefaultBodyLimit::max(10 * 1024 * 1024 * 1024))
 }

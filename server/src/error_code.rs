@@ -23,6 +23,8 @@ pub enum ErrorCode {
     WriteFailed = 20010,            // 写入失败
     MissField = 20011,              // 缺失字段 
     OutSize = 20012,                // 文件大小超出限制
+    FileOpenFaild = 20013,          // 文件打开失败
+    NeedFileNotDir = 20014,         // 需要文件而不是文件夹
 }
 
 impl ErrorCode {
@@ -46,6 +48,8 @@ impl ErrorCode {
             ErrorCode::WriteFailed => "写入失败",
             ErrorCode::MissField => "缺失字段",
             ErrorCode::OutSize => "文件大小超出限制",
+            ErrorCode::FileOpenFaild => "文件打开失败",
+            ErrorCode::NeedFileNotDir => "路径是文件而不是文件夹",
         }
     }
 }
