@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Transfer</class>
+ <widget class="QWidget" name="Transfer">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>850</width>
+    <height>544</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QFrame" name="frame">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>104</width>
+     <height>531</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="spacing">
+           <number>30</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>14</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>传输</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+             <widget class="QToolButton" name="toolButton">
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+                <pointsize>10</pointsize>
+                <kerning>true</kerning>
+               </font>
+              </property>
+              <property name="layoutDirection">
+               <enum>Qt::LeftToRight</enum>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QToolButton {
+    spacing: 20px;   /* 设置图标和文本之间的间距 */
+    padding: 5px;    /* 设置按钮的内边距，调整整体按钮大小 */
+    border: none;    /* 可选，移除边框 */
+    background: #ffffff;  /* 设置背景颜色 */
+    color: #1f2026;    /* 设置字体颜色 */
+    text-align: center;  /* 设置文本居中对齐 */
+    display: flex;       /* 使用flexbox布局 */
+    flex-direction: column; /* 图标在上，文本在下 */
+    justify-content: center; /* 垂直居中 */
+    align-items: center; /* 水平居中 */
+}
+
+QToolButton:hover {
+    background: #f3f4f6;  /* 鼠标悬停时更改背景颜色 */
+}
+
+QToolButton:pressed {
+    background: #f3f4f6;  /* 按下时背景颜色 */
+}
+</string>
+              </property>
+              <property name="text">
+               <string>上传</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../../resource/icon/icon.qrc">
+                <normaloff>:/Transfer/upload.svg</normaloff>:/Transfer/upload.svg</iconset>
+              </property>
+              <property name="toolButtonStyle">
+               <enum>Qt::ToolButtonTextBesideIcon</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="toolButton_2">
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QToolButton {
+    spacing: 20px;   /* 设置图标和文本之间的间距 */
+    padding: 5px;    /* 设置按钮的内边距，调整整体按钮大小 */
+    border: none;    /* 可选，移除边框 */
+    background: #ffffff;  /* 设置背景颜色 */
+    color: #1f2026;    /* 设置字体颜色 */
+    text-align: center;  /* 设置文本居中对齐 */
+    display: flex;       /* 使用flexbox布局 */
+    flex-direction: column; /* 图标在上，文本在下 */
+    justify-content: center; /* 垂直居中 */
+    align-items: center; /* 水平居中 */
+}
+
+QToolButton:hover {
+    background: #f3f4f6;  /* 鼠标悬停时更改背景颜色 */
+}
+
+QToolButton:pressed {
+    background: #f3f4f6;  /* 按下时背景颜色 */
+}
+</string>
+              </property>
+              <property name="text">
+               <string>下载</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../../resource/icon/icon.qrc">
+                <normaloff>:/Transfer/download.svg</normaloff>:/Transfer/download.svg</iconset>
+              </property>
+              <property name="toolButtonStyle">
+               <enum>Qt::ToolButtonTextBesideIcon</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>224</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>40</y>
+     <width>711</width>
+     <height>481</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_4">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QPushButton" name="pushButton">
+          <property name="text">
+           <string>正在上传</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="text">
+           <string>已完成</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QToolButton" name="toolButton_4">
+          <property name="text">
+           <string>全部开始</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../resource/icon/icon.qrc">
+            <normaloff>:/Transfer/start.svg</normaloff>:/Transfer/start.svg</iconset>
+          </property>
+          <property name="toolButtonStyle">
+           <enum>Qt::ToolButtonTextBesideIcon</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="toolButton_5">
+          <property name="text">
+           <string>全部暂停</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../resource/icon/icon.qrc">
+            <normaloff>:/Transfer/stop.svg</normaloff>:/Transfer/stop.svg</iconset>
+          </property>
+          <property name="toolButtonStyle">
+           <enum>Qt::ToolButtonTextBesideIcon</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="toolButton_6">
+          <property name="text">
+           <string>全部取消</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../resource/icon/icon.qrc">
+            <normaloff>:/Transfer/cancel.svg</normaloff>:/Transfer/cancel.svg</iconset>
+          </property>
+          <property name="toolButtonStyle">
+           <enum>Qt::ToolButtonTextBesideIcon</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QToolButton" name="toolButton_3">
+        <property name="text">
+         <string>清空全部记录</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../resource/icon/icon.qrc">
+          <normaloff>:/Transfer/clear.svg</normaloff>:/Transfer/clear.svg</iconset>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextBesideIcon</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QListWidget" name="listWidget"/>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources>
+  <include location="../../resource/icon/icon.qrc"/>
+  <include location="../../resource/icon/icon.qrc"/>
+  <include location="../../resource/icon/icon.qrc"/>
+ </resources>
+ <connections/>
+</ui>
