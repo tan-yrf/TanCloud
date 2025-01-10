@@ -1,0 +1,39 @@
+<RCC>
+    <qresource prefix="/">
+        <file>MainWindow/folder_common.svg</file>
+        <file>MainWindow/folder_selected.svg</file>
+        <file>MainWindow/setting_common.svg</file>
+        <file>MainWindow/sync_common.svg</file>
+        <file>MainWindow/sync_selected.svg</file>
+        <file>MainWindow/transfer_common.svg</file>
+        <file>MainWindow/transfer_selected.svg</file>
+        <file>MainWindow/share_common.svg</file>
+        <file>MainWindow/share_selected.svg</file>
+        <file>MainWindow/close.svg</file>
+        <file>MainWindow/max.svg</file>
+        <file>MainWindow/min.svg</file>
+        <file>MainWindow/window.svg</file>
+        <file>MainWindow/back_able.svg</file>
+        <file>MainWindow/back_unable.svg</file>
+        <file>MainWindow/next_able.svg</file>
+        <file>MainWindow/next_unable.svg</file>
+        <file>MainWindow/cloud.svg</file>
+        <file>FIle/big_img.svg</file>
+        <file>FIle/cell.svg</file>
+        <file>FIle/create_folder.svg</file>
+        <file>FIle/filter.svg</file>
+        <file>FIle/list.svg</file>
+        <file>FIle/plus.svg</file>
+        <file>FIle/refresh.svg</file>
+        <file>FIle/sort.svg</file>
+        <file>FIle/select_down.svg</file>
+        <file>FIle/select_no.svg</file>
+        <file>FIle/select_up.svg</file>
+        <file>Transfer/download.svg</file>
+        <file>Transfer/upload.svg</file>
+        <file>Transfer/clear.svg</file>
+        <file>Transfer/cancel.svg</file>
+        <file>Transfer/start.svg</file>
+        <file>Transfer/stop.svg</file>
+    </qresource>
+</RCC>
