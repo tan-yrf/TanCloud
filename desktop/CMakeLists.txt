@@ -20,11 +20,12 @@ set(PROJECT_SOURCES
 qt_add_executable(
     TanCloud
     MANUAL_FINALIZATION  
-    ${PROJECT_SOURCES}   
+    ${PROJECT_SOURCES}
+    resource/icon/icon.qrc
 )
 
-# 将QtWidgets库连接到主可执行文件
-target_link_libraries(TanCloud PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+# 将库链接到主可执行文件
+target_link_libraries(TanCloud PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Login Exception)
 
 # 针对iOS和Mac的配置
 # Qt 6.1及以上版本会自动设置MACOSX_BUNDLE_GUI_IDENTIFIER
@@ -44,6 +45,9 @@ set_target_properties(TanCloud PROPERTIES
 )
 
 ###############################################添加引用模块################################
+# 添加异常模块
+add_subdirectory(src/Exception)
+
 # 添加登录模块
 add_subdirectory(src/Login)
 
