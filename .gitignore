@@ -1,2 +1,3 @@
 server/tancloud.db
 .vscode/settings.json
+desktop/CMakeLists.txt.user
