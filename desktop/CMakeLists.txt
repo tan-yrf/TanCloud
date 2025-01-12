@@ -21,7 +21,6 @@ qt_add_executable(
     TanCloud
     MANUAL_FINALIZATION  
     ${PROJECT_SOURCES}   
-    resource/icon/icon.qrc
 )
 
 # 将QtWidgets库连接到主可执行文件
@@ -46,7 +45,7 @@ set_target_properties(TanCloud PROPERTIES
 
 ###############################################添加引用模块################################
 # 添加登录模块
-add_subdirectory(src/Login)
+#add_subdirectory(src/Login)
 
 ###############################################结束添加引用################################
 
