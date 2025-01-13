@@ -46,7 +46,7 @@ Login::Login(QWidget *parent)
         m_password = obj.value("password").toString();
         ui->edit_address->setText(m_address);
         ui->edit_username->setText(m_username);
-        ui->edit_password->setText("*********************");
+        ui->edit_password->setText(m_password);
     } else {
         if (file.open(QIODevice::WriteOnly) == false) {
             throw Exception(ExceptionType::SystemError);
