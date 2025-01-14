@@ -23,16 +23,15 @@ enum ContentType {
     json
 };
 
-
 class Request {
 public:
     Request(MethodType method_type, ContentType conten_type, std::string api_path);
 
-    Response Send();
+    Response send();
 
 private:
-    Response SendHttp();
-    Response SendHttps();
+    Response sendHttp();
+    Response sendHttps();
 
 private:
     std::string m_api_path;
@@ -45,6 +44,7 @@ private:
     // 请求体有两种，json和表单类型，根据 content_type 进行匹配
     QString m_json_body;
     QMap<QString, QString> m_form_body;
+
 };
 
 #endif // REQUEST_H

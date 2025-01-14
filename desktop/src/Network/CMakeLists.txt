@@ -6,5 +6,5 @@ qt_add_library(Network
 
 )
 
-target_link_libraries(Network PRIVATE Qt${QT_VERSION_MAJOR}::Core ${Boost_LIBRARIES} OpenSSL::Crypto OpenSSL::SSL Config)
+target_link_libraries(Network PRIVATE Qt${QT_VERSION_MAJOR}::Core ${Boost_LIBRARIES} OpenSSL::Crypto OpenSSL::SSL Exception Config)
 target_include_directories(Network PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
