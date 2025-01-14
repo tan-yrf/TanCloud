@@ -8,14 +8,17 @@
 #include <QByteArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QMessageBox>
 
 #include "Exception.h"
+#include "NetConfig.h"
 
 Login::Login(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Login)
 {
     ui->setupUi(this);
+    this->setFixedSize(300, 200);
 
     // 加载配置文件，如果用户没有就生成一个配置文件夹和config.json
     QString home_path = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
@@ -68,6 +71,10 @@ Login::~Login()
 
 void Login::on_btn_login_clicked()
 {
+    if (NetConfig::set_net_config(ui->edit_address->text().toStdString()) == false ) {
+        QMessageBox::information(this, "服务器地址格式错误", "示例：http://example.com:8080    ");
+        return;
+    }
     m_address = ui->edit_address->text();
     m_username = ui->edit_username->text();
     m_password = ui->edit_password->text();
