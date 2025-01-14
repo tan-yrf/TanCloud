@@ -6,6 +6,8 @@ Exception::Exception(ExceptionType type)
     switch (type) {
     case ExceptionType::SystemError:
         m_message = u8"系统异常";
+    case ExceptionType::FileReadAndWriteError:
+        m_message = u8"文件读写异常";
     case ExceptionType::NetWorkError:
         m_message = u8"网络异常";
     case ExceptionType::ConfigError:

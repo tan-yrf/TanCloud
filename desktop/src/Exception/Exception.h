@@ -8,6 +8,7 @@
 
 enum class ExceptionType {
     SystemError,
+    FileReadAndWriteError,
     NetWorkError,
     ConfigError,
     Unknow
