@@ -13,11 +13,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
+# 查找 OpenSSL 库
+find_package(OpenSSL REQUIRED)
+
+# 打印 OpenSSL 的路径
+message(STATUS "OpenSSL_INCLUDE_DIR: ${OPENSSL_INCLUDE_DIR}")
+message(STATUS "OpenSSL_LIBRARIES: ${OPENSSL_LIBRARIES}")
+
 # 查找 Boost 库，指定需要的模块
 set(BOOST_ROOT "${CMAKE_SOURCE_DIR}/3rdparty/boost_1_87_0")  # 设置 Boost 的根路径
 set(Boost_USE_STATIC_LIBS ON)   # 使用静态库（如果需要动态库，设置为 OFF）
 set(Boost_USE_MULTITHREADED ON) # 启用多线程支持
-find_package(Boost REQUIRED COMPONENTS system)
+find_package(Boost 1.87 REQUIRED COMPONENTS system)
 
 set(PROJECT_SOURCES 
     src/main.cpp
@@ -32,14 +39,13 @@ qt_add_executable(
 
 # 检查并配置 Boost
 if(Boost_FOUND)
-    target_include_directories(TanCloud PRIVATE ${Boost_INCLUDE_DIRS})
-    target_link_libraries(TanCloud PRIVATE ${Boost_LIBRARIES})
+    include_directories(${Boost_INCLUDE_DIRS})
+    link_libraries(${Boost_LIBRARIES})
 else()
     message(FATAL_ERROR "Boost not found!")
 endif()
 
-
-target_link_libraries(TanCloud PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Login Exception)
+target_link_libraries(TanCloud PRIVATE Qt${QT_VERSION_MAJOR}::Widgets OpenSSL::Crypto OpenSSL::SSL Login Exception)
 
 # 针对iOS和Mac的配置
 # Qt 6.1及以上版本会自动设置MACOSX_BUNDLE_GUI_IDENTIFIER
@@ -61,6 +67,12 @@ set_target_properties(TanCloud PROPERTIES
 ###############################################添加引用模块################################
 # 添加异常模块
 add_subdirectory(src/Exception)
+
+# 添加配置模块
+add_subdirectory(src/Config)
+
+# 添加网络模块
+add_subdirectory(src/Network)
 
 # 添加登录模块
 add_subdirectory(src/Login)
