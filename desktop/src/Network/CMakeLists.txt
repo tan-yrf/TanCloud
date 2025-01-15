@@ -1,6 +1,6 @@
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
 
-qt_add_library(Network
+qt_add_library(Network STATIC
     Response.h Response.cpp
     Request.h Request.cpp
 
