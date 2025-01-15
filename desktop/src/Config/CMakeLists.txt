@@ -2,6 +2,8 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
 
 qt_add_library(Config STATIC
     NetConfig.h
+    UserConfig.h
+    ApiPath.h
 )
 
 target_link_libraries(Config PRIVATE Qt${QT_VERSION_MAJOR}::Core)

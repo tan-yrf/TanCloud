@@ -21,7 +21,7 @@ namespace NetConfig {
         if (std::regex_match(path, match, regex) == false)
             return false;
 
-        base_path = path;
+        base_path = path + "/TanCloud";
         request_protocol = match[2].str().empty()? "http" : match[2].str();
         server_address = match[3].str();
         port = match[5].str().empty() ? (request_protocol == "https" ? "443" : "80") : match[5].str();
