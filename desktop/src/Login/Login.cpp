@@ -12,6 +12,8 @@
 
 #include "Exception.h"
 #include "NetConfig.h"
+#include "ApiPath.h"
+#include "Request.h"
 
 Login::Login(QWidget *parent)
     : QWidget(parent)
@@ -71,6 +73,7 @@ Login::~Login()
 
 void Login::on_btn_login_clicked()
 {
+    // 修改保存的登录配置
     if (NetConfig::set_net_config(ui->edit_address->text().toStdString()) == false ) {
         QMessageBox::information(this, "服务器地址格式错误", "示例：http://example.com:8080    ");
         return;
@@ -97,6 +100,10 @@ void Login::on_btn_login_clicked()
         throw Exception(ExceptionType::ConfigError);
     }
 
+    // 尝试登录
+    Request request(MethodType::post_method, ContentType::json, ApiPath::c_login);
+    request.m_form_body.insert("name", m_username);
+    request.m_form_body.insert("password", m_password);
 
 }
 
