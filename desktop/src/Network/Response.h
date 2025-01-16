@@ -11,6 +11,8 @@ class Response
 public:
     Response(const std::string& str);
 
+    void showMessage();
+
     int code;
     QString message;
     QJsonObject body;

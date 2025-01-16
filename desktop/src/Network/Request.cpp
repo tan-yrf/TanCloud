@@ -41,7 +41,7 @@ void setRequest(HttpRequest& request, MethodType method_type, ContentType conten
         break;
     }
 
-    std::string target = NetConfig::base_path + "/" + api_path;
+    std::string target = NetConfig::base_path + api_path;
 
     // 根据请求体类型，填入请求体数据
     switch (content_type) {
@@ -105,7 +105,6 @@ void setRequest(HttpRequest& request, MethodType method_type, ContentType conten
             }
             QJsonDocument doc(obj);
             request.body() = QString::fromUtf8(doc.toJson()).toStdString();
-
         } else {
             request.body() = json_body.toStdString();
         }
@@ -149,10 +148,17 @@ Response Request::sendHttp() {
     auto endpoints = resolver.resolve(NetConfig::server_address, NetConfig::port);
 
     tcp::socket socket(io_context);
-    asio::connect(socket, endpoints);
+    try {
+        asio::connect(socket, endpoints);
+    } catch(const boost::system::system_error& e) {
+        qDebug() << u8"连接失败";
+        throw Exception(ExceptionType::ServerConnectError);
+    }
 
     HttpRequest request;
     setRequest(request, m_method_type, m_content_type, m_api_path, m_head, m_json_body, m_form_body);
+
+    qDebug() << "请求体： " << request.body();
 
     http::write(socket, request);
 
@@ -165,6 +171,12 @@ Response Request::sendHttp() {
     beast::error_code ec;
     socket.shutdown(tcp::socket::shutdown_both, ec);
     if (ec && ec != asio::error::not_connected) {
+        throw Exception(ExceptionType::NetWorkError);
+    }
+
+    qDebug() << "响应状态码: " << res.result_int();
+    qDebug() << "响应内容: " << QString::fromStdString(beast::buffers_to_string(res.body().data()));
+    if (res.result_int() != 200) {
         throw Exception(ExceptionType::NetWorkError);
     }
 
@@ -191,7 +203,13 @@ Response Request::sendHttps() {
     auto endpoints = resolver.resolve(NetConfig::server_address, NetConfig::port);
 
     ssl::stream<tcp::socket> socket(io_context, ssl_context);
-    asio::connect(socket.next_layer(), endpoints);
+    try {
+        asio::connect(socket.next_layer(), endpoints);
+    } catch(const boost::system::system_error& e) {
+        qDebug() << u8"连接失败";
+        throw Exception(ExceptionType::ServerConnectError);
+    }
+
     socket.handshake(ssl::stream_base::client);
 
     HttpRequest request;
