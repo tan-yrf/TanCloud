@@ -4,6 +4,9 @@ qt_add_library(Config STATIC
     NetConfig.h
     UserConfig.h
     ApiPath.h
+    NetConfig.cpp
+    ../../resource/icon/icon.qrc
+    UserConfig.cpp
 )
 
 target_link_libraries(Config PRIVATE Qt${QT_VERSION_MAJOR}::Core)
