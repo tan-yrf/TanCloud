@@ -1,5 +1,12 @@
 <RCC>
     <qresource prefix="/">
         <file>ico.svg</file>
+        <file>folder_common.svg</file>
+        <file>folder_selected.svg</file>
+        <file>setting.svg</file>
+        <file>share_common.svg</file>
+        <file>share_selected.svg</file>
+        <file>transfer_common.svg</file>
+        <file>transfer_selected.svg</file>
     </qresource>
 </RCC>
