@@ -1,5 +1,9 @@
+use std::fs;
 use std::fs::metadata;
 use std::path::PathBuf;
+
+use walkdir::WalkDir;
+
 use crate::WORK_DIR;
 
 
@@ -45,4 +49,15 @@ pub fn validate_new_name(target: &PathBuf, new_name: &String) -> Result<(), ()> 
     }
 
     Ok(())
+}
+
+// 计算文件夹大小
+pub fn calculate_dir_size(path: &PathBuf) -> i64 {
+    WalkDir::new(path)
+        .into_iter() 
+        .filter_map(|entry| entry.ok()) 
+        .filter_map(|entry| fs::metadata(entry.path()).ok()) 
+        .filter(|metadata| metadata.is_file()) // 仅计算文件
+        .map(|metadata| metadata.len() as i64) 
+        .sum() 
 }
