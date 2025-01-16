@@ -1,6 +1,8 @@
+#include <QApplication>
+
+#include "Exception.h"
 #include "Login/Login.h"
 
-#include <QApplication>
 
 int main(int argc, char* argv[])
 {
@@ -8,5 +10,9 @@ int main(int argc, char* argv[])
     Login login;
     login.show();
 
+    QObject::connect(&login, &Login::LoginSuccess, [&](){
+
+    });
     return a.exec();
 }
+
