@@ -119,6 +119,7 @@ void Login::on_btn_login_clicked()
             UserConfig::token = response.body["token"].toString();
 
             emit LoginSuccess();
+            this->close();
         }
     } catch (Exception e) {
         qDebug() << e.what();
