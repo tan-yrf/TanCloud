@@ -4,7 +4,6 @@ use axum::{
     response::IntoResponse,
     http::StatusCode,
 };
-use walkdir::WalkDir;
 use serde_json::json;
 use std::{
     fs,
@@ -16,7 +15,8 @@ use crate::{
     http_response::HttpResponse,
     error_code::ErrorCode,
     mid::UserInfo,
-    fs::tools::{verify_path, validate_new_name},
+    fs::tools::{verify_path, validate_new_name, calculate_dir_size},
+    WORK_DIR,
 };
 
 pub async fn handle_upload (
@@ -51,7 +51,7 @@ pub async fn handle_upload (
                 }
 
                 // 校验上传的文件大小是否超出限制
-                let available_size = user_info.space - calculate_dir_size(&verify_path_res.root_path);
+                let available_size = user_info.space - calculate_dir_size(&WORK_DIR.join(user_info.id.to_string().clone()));
                 if size > available_size {
                     let response = HttpResponse::new(ErrorCode::OutSize, json!({}));
                     return (StatusCode::OK, Json(response));
@@ -109,12 +109,3 @@ pub async fn handle_upload (
     (StatusCode::OK, Json(response))
 }
 
-fn calculate_dir_size(path: &PathBuf) -> i64 {
-    WalkDir::new(path)
-        .into_iter() 
-        .filter_map(|entry| entry.ok()) 
-        .filter_map(|entry| fs::metadata(entry.path()).ok()) 
-        .filter(|metadata| metadata.is_file()) // 仅计算文件
-        .map(|metadata| metadata.len() as i64) 
-        .sum() 
-}

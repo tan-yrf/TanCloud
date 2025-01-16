@@ -8,6 +8,7 @@ use crate::config::get_db_pool;
 use crate::http_response::HttpResponse;
 use crate::error_code::ErrorCode;
 use crate::WORK_DIR;
+use crate::fs::tools::calculate_dir_size;
 
 pub fn user_routes() -> Router {
     Router::new()
@@ -63,7 +64,15 @@ pub async fn login(user: Json<User>) -> impl IntoResponse {
                 // 校验通过，创建用户的目录结构
                 if let Some(user_id) = user_data.id {
                     create_user_folder(user_id).await;
-                    HttpResponse::new(ErrorCode::Success, json!({ "token": user_id }))
+                    let user_dir = WORK_DIR.join(user_id.to_string());
+                    let used = calculate_dir_size(&user_dir);
+                    HttpResponse::new(ErrorCode::Success, json!({ 
+                        "id": user_data.id,
+                        "name": user_data.name,
+                        "space": user_data.space,
+                        "used": used,
+                        "token": user_id
+                    }))
                 } else {
                     HttpResponse::new(ErrorCode::Unknown, json!({}))
                 }

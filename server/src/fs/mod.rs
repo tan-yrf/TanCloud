@@ -1,4 +1,4 @@
-mod tools;
+pub mod tools;
 mod info;
 mod rename;
 mod copy;
