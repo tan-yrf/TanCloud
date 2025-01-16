@@ -7,6 +7,7 @@
 #include <QString>
 
 enum class ExceptionType {
+    ServerConnectError,
     SystemError,
     FileReadAndWriteError,
     NetWorkError,
@@ -20,6 +21,7 @@ public:
 
     const char* what() const noexcept override;
 
+    void showMessage();
 private:
     ExceptionType m_type;
     std::string m_message;
