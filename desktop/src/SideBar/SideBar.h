@@ -15,8 +15,17 @@ public:
     explicit SideBar(QWidget *parent = nullptr);
     ~SideBar();
 
+private slots:
+    void on_btn_file_clicked();
+
+    void on_btn_transfer_clicked();
+
+    void on_btn_share_clicked();
+
 private:
     Ui::SideBar *ui;
+    QString m_common_style;
+    QString m_selected_style;
 };
 
 #endif // SIDEBAR_H
