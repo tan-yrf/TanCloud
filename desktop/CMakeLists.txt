@@ -45,7 +45,7 @@ else()
     message(FATAL_ERROR "Boost not found!")
 endif()
 
-target_link_libraries(TanCloud PRIVATE Qt${QT_VERSION_MAJOR}::Widgets OpenSSL::Crypto OpenSSL::SSL Exception Login SideBar MainWindow)
+target_link_libraries(TanCloud PRIVATE Qt${QT_VERSION_MAJOR}::Widgets OpenSSL::Crypto OpenSSL::SSL Exception Login SideBar File Transfer Share MainWindow)
 
 # 针对iOS和Mac的配置
 # Qt 6.1及以上版本会自动设置MACOSX_BUNDLE_GUI_IDENTIFIER
@@ -77,8 +77,17 @@ add_subdirectory(src/Network)
 # 添加登录模块
 add_subdirectory(src/Login)
 
-# 添加侧边栏
+# 添加侧边栏模块
 add_subdirectory(src/SideBar)
+
+# 添加文件模块
+add_subdirectory(src/FIle)
+
+# 添加传输模块
+add_subdirectory(src/Transfer)
+
+# 添加分享模块
+add_subdirectory(src/Share)
 
 # 添加主界面
 add_subdirectory(src/MainWindow)
