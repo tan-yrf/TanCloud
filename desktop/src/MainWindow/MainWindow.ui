@@ -64,9 +64,10 @@
       </widget>
      </item>
      <item>
-      <widget class="QStackedWidget" name="stackedWidget">
-       <widget class="QWidget" name="page"/>
-       <widget class="QWidget" name="page_2"/>
+      <widget class="QStackedWidget" name="widgets">
+       <widget class="File" name="file"/>
+       <widget class="Transfer" name="transfer"/>
+       <widget class="Share" name="share"/>
       </widget>
      </item>
     </layout>
@@ -77,11 +78,32 @@
   <customwidget>
    <class>SideBar</class>
    <extends>QWidget</extends>
-   <header>sidebar.h</header>
+   <header>SideBar.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>File</class>
+   <extends>QWidget</extends>
+   <header>FIle.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Transfer</class>
+   <extends>QWidget</extends>
+   <header>Transfer.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Share</class>
+   <extends>QWidget</extends>
+   <header>Share.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>
+  <include location="../../resource/icon/icon.qrc"/>
+  <include location="../../resource/icon/icon.qrc"/>
+  <include location="../../resource/icon/icon.qrc"/>
   <include location="../../resource/icon/icon.qrc"/>
   <include location="../../resource/icon/icon.qrc"/>
   <include location="../../resource/icon/icon.qrc"/>

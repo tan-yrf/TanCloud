@@ -9,6 +9,18 @@ MainWindow::MainWindow(QWidget *parent)
     palette.setColor(QPalette::Window, QColor(255, 255, 255));
     this->setPalette(palette);
     this->setAutoFillBackground(true);
+
+    connect(ui->sidebar, &SideBar::switchFile, [&](){
+        ui->widgets->setCurrentWidget(ui->file);
+    });
+
+    connect(ui->sidebar, &SideBar::switchTransfer, [&](){
+        ui->widgets->setCurrentWidget(ui->transfer);
+    });
+
+    connect(ui->sidebar, &SideBar::switchShare, [&](){
+        ui->widgets->setCurrentWidget(ui->share);
+    });
 }
 
 MainWindow::~MainWindow() {
