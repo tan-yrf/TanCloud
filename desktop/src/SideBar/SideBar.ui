@@ -160,7 +160,7 @@ QToolButton:hover {
          </property>
          <property name="icon">
           <iconset resource="../../resource/icon/icon.qrc">
-           <normaloff>:/folder_common.svg</normaloff>:/folder_common.svg</iconset>
+           <normaloff>:/SideBar/folder_common.svg</normaloff>:/SideBar/folder_common.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -206,7 +206,7 @@ QToolButton:hover {
          </property>
          <property name="icon">
           <iconset resource="../../resource/icon/icon.qrc">
-           <normaloff>:/transfer_common.svg</normaloff>:/transfer_common.svg</iconset>
+           <normaloff>:/SideBar/transfer_common.svg</normaloff>:/SideBar/transfer_common.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -252,7 +252,7 @@ QToolButton:hover {
          </property>
          <property name="icon">
           <iconset resource="../../resource/icon/icon.qrc">
-           <normaloff>:/share_common.svg</normaloff>:/share_common.svg</iconset>
+           <normaloff>:/SideBar/share_common.svg</normaloff>:/SideBar/share_common.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -313,7 +313,7 @@ QPushButton:hover {
        </property>
        <property name="icon">
         <iconset resource="../../resource/icon/icon.qrc">
-         <normaloff>:/setting.svg</normaloff>:/setting.svg</iconset>
+         <normaloff>:/SideBar/setting.svg</normaloff>:/SideBar/setting.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -328,6 +328,9 @@ QPushButton:hover {
   </layout>
  </widget>
  <resources>
+  <include location="../../resource/icon/icon.qrc"/>
+  <include location="../../resource/icon/icon.qrc"/>
+  <include location="../../resource/icon/icon.qrc"/>
   <include location="../../resource/icon/icon.qrc"/>
   <include location="../../resource/icon/icon.qrc"/>
   <include location="../../resource/icon/icon.qrc"/>

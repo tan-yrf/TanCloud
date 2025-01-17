@@ -11,7 +11,6 @@ SideBar::SideBar(QWidget *parent)
     this->setPalette(palette);
     this->setAutoFillBackground(true);
 
-    // 普通状态样式
     m_common_style = "QToolButton {"
                      "    background-color: rgb(245, 247, 250);"
                      "    color: #1f2026;"
@@ -23,7 +22,6 @@ SideBar::SideBar(QWidget *parent)
                      "    background-color: rgb(235, 237, 241);"
                      "}";
 
-    // 选中状态样式
     m_selected_style = "QToolButton {"
                        "    background-color: rgb(245, 247, 250);"
                        "    color: #0d53fd;"
@@ -34,6 +32,8 @@ SideBar::SideBar(QWidget *parent)
                        "QToolButton:hover {"
                        "    background-color: rgb(235, 237, 241);"
                        "}";
+
+    on_btn_file_clicked();
 }
 
 SideBar::~SideBar() {
@@ -41,37 +41,43 @@ SideBar::~SideBar() {
 }
 
 void SideBar::on_btn_file_clicked() {
-    ui->btn_file->setIcon(QIcon(":/folder_selected.svg"));
+    ui->btn_file->setIcon(QIcon(":/SideBar/folder_selected.svg"));
     ui->btn_file->setStyleSheet(m_selected_style);
 
-    ui->btn_transfer->setIcon(QIcon(":/transfer_common.svg"));
+    ui->btn_transfer->setIcon(QIcon(":/SideBar/transfer_common.svg"));
     ui->btn_transfer->setStyleSheet(m_common_style);
 
-    ui->btn_share->setIcon(QIcon(":/share_common.svg"));
+    ui->btn_share->setIcon(QIcon(":/SideBar/share_common.svg"));
     ui->btn_share->setStyleSheet(m_common_style);
+
+    emit switchFile();
 }
 
 
 void SideBar::on_btn_transfer_clicked() {
-    ui->btn_file->setIcon(QIcon(":/folder_common.svg"));
+    ui->btn_file->setIcon(QIcon(":/SideBar/folder_common.svg"));
     ui->btn_file->setStyleSheet(m_common_style);
 
-    ui->btn_transfer->setIcon(QIcon(":/transfer_selected.svg"));
+    ui->btn_transfer->setIcon(QIcon(":/SideBar/transfer_selected.svg"));
     ui->btn_transfer->setStyleSheet(m_selected_style);
 
-    ui->btn_share->setIcon(QIcon(":/share_common.svg"));
+    ui->btn_share->setIcon(QIcon(":/SideBar/share_common.svg"));
     ui->btn_share->setStyleSheet(m_common_style);
+
+    emit switchTransfer();
 }
 
 
 void SideBar::on_btn_share_clicked() {
-    ui->btn_file->setIcon(QIcon(":/folder_common.svg"));
+    ui->btn_file->setIcon(QIcon(":/SideBar/folder_common.svg"));
     ui->btn_file->setStyleSheet(m_common_style);
 
-    ui->btn_transfer->setIcon(QIcon(":/transfer_common.svg"));
+    ui->btn_transfer->setIcon(QIcon(":/SideBar/transfer_common.svg"));
     ui->btn_transfer->setStyleSheet(m_common_style);
 
-    ui->btn_share->setIcon(QIcon(":/share_selected.svg"));
+    ui->btn_share->setIcon(QIcon(":/SideBar/share_selected.svg"));
     ui->btn_share->setStyleSheet(m_selected_style);
+
+    emit switchShare();
 }
 

@@ -15,11 +15,14 @@ public:
     explicit SideBar(QWidget *parent = nullptr);
     ~SideBar();
 
+signals:
+    void switchFile();
+    void switchTransfer();
+    void switchShare();
+
 private slots:
     void on_btn_file_clicked();
-
     void on_btn_transfer_clicked();
-
     void on_btn_share_clicked();
 
 private:
