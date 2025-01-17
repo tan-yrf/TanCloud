@@ -1,6 +1,8 @@
 #include "SideBar.h"
 #include "ui_SideBar.h"
 
+#include "UserConfig.h"
+
 SideBar::SideBar(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::SideBar) {
@@ -38,6 +40,51 @@ SideBar::SideBar(QWidget *parent)
 
 SideBar::~SideBar() {
     delete ui;
+}
+
+void SideBar::updateSpaceSize() {
+    const qint64 used_size = UserConfig::used;
+    const qint64 total_size = UserConfig::space;
+
+    const qint64 TB = 1024LL * 1024 * 1024 * 1024;
+    const qint64 GB = 1024LL * 1024 * 1024;
+    const qint64 MB = 1024LL * 1024;
+
+    QString text;
+    if (used_size < TB) {
+        if (used_size < GB) {
+            double used = used_size / MB;
+            text += QString("%1%2").arg(used, 0, 'f', 0).arg("M");
+        } else {
+            double used = used_size / GB;
+            text += QString("%1%2").arg(used, 0, 'f', 1).arg("G");
+        }
+    } else {
+        double used = used_size / TB;
+        text += QString("%1%2").arg(used, 0, 'f', 1).arg("T");
+    }
+    text += '/';
+    if (total_size < TB) {
+        if (total_size < GB) {
+            int total = total_size / MB;
+            text += QString("%1%2").arg(total).arg("M");
+        } else {
+            int total = total_size / GB;
+            text += QString("%1%2").arg(total).arg("G");
+        }
+    } else {
+        int total = total_size / TB;
+        text += QString("%1%2").arg(total).arg("T");
+    }
+    ui->lab_rate->setText(text);
+
+    if (total_size < 0 || total_size == 0) {
+        ui->progress_bar->setValue(0);
+        return;
+    }
+
+    double rate = used_size * 100  / total_size;
+    ui->progress_bar->setValue(rate);
 }
 
 void SideBar::on_btn_file_clicked() {
