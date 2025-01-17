@@ -1,12 +1,29 @@
 <RCC>
     <qresource prefix="/">
+        <file>FIle/big_img.svg</file>
+        <file>FIle/cell.svg</file>
+        <file>FIle/create_folder.svg</file>
+        <file>FIle/filter.svg</file>
+        <file>FIle/list.svg</file>
+        <file>FIle/plus.svg</file>
+        <file>FIle/refresh.svg</file>
+        <file>FIle/select_down.svg</file>
+        <file>FIle/select_no.svg</file>
+        <file>FIle/select_up.svg</file>
+        <file>FIle/sort.svg</file>
+        <file>Transfer/cancel.svg</file>
+        <file>Transfer/clear.svg</file>
+        <file>Transfer/download.svg</file>
+        <file>Transfer/start.svg</file>
+        <file>Transfer/stop.svg</file>
+        <file>Transfer/upload.svg</file>
+        <file>SideBar/folder_common.svg</file>
+        <file>SideBar/folder_selected.svg</file>
+        <file>SideBar/setting.svg</file>
+        <file>SideBar/share_common.svg</file>
+        <file>SideBar/share_selected.svg</file>
+        <file>SideBar/transfer_common.svg</file>
+        <file>SideBar/transfer_selected.svg</file>
         <file>ico.svg</file>
-        <file>folder_common.svg</file>
-        <file>folder_selected.svg</file>
-        <file>setting.svg</file>
-        <file>share_common.svg</file>
-        <file>share_selected.svg</file>
-        <file>transfer_common.svg</file>
-        <file>transfer_selected.svg</file>
     </qresource>
 </RCC>
