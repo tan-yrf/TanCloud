@@ -66,27 +66,7 @@
                <enum>Qt::LeftToRight</enum>
               </property>
               <property name="styleSheet">
-               <string notr="true">QToolButton {
-    spacing: 20px;   /* 设置图标和文本之间的间距 */
-    padding: 5px;    /* 设置按钮的内边距，调整整体按钮大小 */
-    border: none;    /* 可选，移除边框 */
-    background: #ffffff;  /* 设置背景颜色 */
-    color: #1f2026;    /* 设置字体颜色 */
-    text-align: center;  /* 设置文本居中对齐 */
-    display: flex;       /* 使用flexbox布局 */
-    flex-direction: column; /* 图标在上，文本在下 */
-    justify-content: center; /* 垂直居中 */
-    align-items: center; /* 水平居中 */
-}
-
-QToolButton:hover {
-    background: #f3f4f6;  /* 鼠标悬停时更改背景颜色 */
-}
-
-QToolButton:pressed {
-    background: #f3f4f6;  /* 按下时背景颜色 */
-}
-</string>
+               <string notr="true"/>
               </property>
               <property name="text">
                <string>上传</string>
@@ -109,27 +89,7 @@ QToolButton:pressed {
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">QToolButton {
-    spacing: 20px;   /* 设置图标和文本之间的间距 */
-    padding: 5px;    /* 设置按钮的内边距，调整整体按钮大小 */
-    border: none;    /* 可选，移除边框 */
-    background: #ffffff;  /* 设置背景颜色 */
-    color: #1f2026;    /* 设置字体颜色 */
-    text-align: center;  /* 设置文本居中对齐 */
-    display: flex;       /* 使用flexbox布局 */
-    flex-direction: column; /* 图标在上，文本在下 */
-    justify-content: center; /* 垂直居中 */
-    align-items: center; /* 水平居中 */
-}
-
-QToolButton:hover {
-    background: #f3f4f6;  /* 鼠标悬停时更改背景颜色 */
-}
-
-QToolButton:pressed {
-    background: #f3f4f6;  /* 按下时背景颜色 */
-}
-</string>
+               <string notr="true"/>
               </property>
               <property name="text">
                <string>下载</string>
