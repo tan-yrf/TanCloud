@@ -8,7 +8,6 @@ File::File(QWidget *parent)
     ui->setupUi(this);
 }
 
-File::~File()
-{
+File::~File() {
     delete ui;
 }
