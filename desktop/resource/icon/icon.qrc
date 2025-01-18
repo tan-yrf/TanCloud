@@ -25,5 +25,6 @@
         <file>SideBar/transfer_common.svg</file>
         <file>SideBar/transfer_selected.svg</file>
         <file>ico.svg</file>
+        <file>FIle/delete.svg</file>
     </qresource>
 </RCC>
