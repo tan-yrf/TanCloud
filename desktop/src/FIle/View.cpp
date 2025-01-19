@@ -1,3 +1,5 @@
 #include "View.h"
 
-View::View() {}
+View::View(QWidget *parent) : QListView(parent) {
+
+}
