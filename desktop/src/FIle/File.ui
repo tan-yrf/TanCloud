@@ -13,61 +13,6 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="View" name="view" native="true">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>110</y>
-     <width>961</width>
-     <height>461</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="checkBox">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>80</y>
-     <width>51</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>全选</string>
-   </property>
-  </widget>
-  <widget class="QToolButton" name="create_folder_3">
-   <property name="geometry">
-    <rect>
-     <x>80</x>
-     <y>70</y>
-     <width>50</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>50</width>
-     <height>30</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>50</width>
-     <height>30</height>
-    </size>
-   </property>
-   <property name="text">
-    <string>删除</string>
-   </property>
-   <property name="icon">
-    <iconset resource="../../resource/icon/icon.qrc">
-     <normaloff>:/FIle/delete.svg</normaloff>:/FIle/delete.svg</iconset>
-   </property>
-   <property name="toolButtonStyle">
-    <enum>Qt::ToolButtonTextBesideIcon</enum>
-   </property>
-  </widget>
   <widget class="QToolButton" name="upload_2">
    <property name="geometry">
     <rect>
@@ -192,7 +137,7 @@
      <normaloff>:/FIle/filter.svg</normaloff>:/FIle/filter.svg</iconset>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>846</x>
@@ -237,12 +182,68 @@
     </item>
    </layout>
   </widget>
+  <widget class="QScrollArea" name="scrollArea">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>150</y>
+     <width>901</width>
+     <height>401</height>
+    </rect>
+   </property>
+   <property name="widgetResizable">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="scrollAreaWidgetContents">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>899</width>
+      <height>399</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="ViewHeader" name="view_header" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>40</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="View" name="view" native="true"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
    <class>View</class>
    <extends>QWidget</extends>
    <header>View.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ViewHeader</class>
+   <extends>QWidget</extends>
+   <header>ViewHeader.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
