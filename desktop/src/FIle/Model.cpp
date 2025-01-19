@@ -10,6 +10,10 @@ QModelIndex Model::index(int row, int colum, const QModelIndex &parent) const {
     return createIndex(row, 0, m_items.at(row));
 }
 
+QModelIndex Model::parent(const QModelIndex &child) const {
+    return QModelIndex(); // 没有父项
+}
+
 int Model::rowCount(const QModelIndex &parent) const {
     return m_items.count();
 }

@@ -12,3 +12,8 @@ ViewHeader::~ViewHeader()
 {
     delete ui;
 }
+
+void ViewHeader::on_check_all_clicked(bool checked) {
+    emit checkAll(checked);
+}
+
