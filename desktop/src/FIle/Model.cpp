@@ -1,106 +1,109 @@
 #include "Model.h"
 
-#include "Item.h"
+Model::Model(QObject *parent) : QAbstractItemModel(parent) {
 
-
-Model::Model() {
-    m_headers << u8"  "<< u8"文件名" << u8"大小" << u8"文件类型" << u8"修改时间";
 }
 
+QModelIndex Model::index(int row, int colum, const QModelIndex &parent) const {
+    if (row < 0 || row >= m_items.count())
+        return QModelIndex();
+    return createIndex(row, 0, m_items.at(row));
+}
 
 int Model::rowCount(const QModelIndex &parent) const {
-    return parent.isValid()? 0 : m_items.count();
+    return m_items.count();
 }
 
 int Model::columnCount(const QModelIndex &parent) const {
-    return parent.isValid() ? 0 : m_headers.count();
+    return 1;           // listview 只有一列
 }
 
 QVariant Model::data(const QModelIndex &index, int role) const {
     if (index.isValid() == false)
         return QVariant();
-
-    const Item& item = m_items.at(index.row());
-
-    if (role == Qt::DisplayRole) {
-        switch (index.column()) {
-        case 0:
-            return item.selecteState()? u8"√": "";
-            break;
-        case 1:
-            return item.name();
-            break;
-        case 2:
-            return item.size();
-            break;
-        case 3:
-            return item.type();
-            break;
-        case 4:
-            return item.lastModifyTime();
-            break;
-        default:
-            break;
-        }
-    } else if (role == Qt::CheckStateRole && index.column() == 0) {
-        return item.selecteState() ? Qt::Checked : Qt::Unchecked;
+    Item* item = static_cast<Item*>(index.internalPointer());
+    if (item) {
+        return item->data(role);
     }
-
     return QVariant();
 }
 
 bool Model::setData(const QModelIndex &index, const QVariant &value, int role) {
     if (index.isValid() == false)
         return false;
-
-    Item& item = m_items[index.row()];
-
-    if (role == Qt::CheckStateRole && index.column() == 0) {
-        bool state = (value.toInt() == Qt::Checked);
-        item.setSelectState(state);
-        emit dataChanged(index, index);     // 更新视图
-        return true;
+    Item* item = m_items.at(index.row());
+    if (item) {
+        return item->setData(role, value);
     }
-
     return false;
 }
 
-QVariant Model::headerData(int section, Qt::Orientation orientation, int role) const {
-    if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
-        return m_headers.at(section);
-    }
-    return QVariant();
-}
-
-QModelIndex Model::index(int row, int column, const QModelIndex &parent) const {
-    if (parent.isValid() == false) {
-        return createIndex(row, column);
-    }
-    return QModelIndex();
-}
-
-QModelIndex Model::parent(const QModelIndex &index) const {
-    return QModelIndex();
-}
-
 Qt::ItemFlags Model::flags(const QModelIndex &index) const {
-    Qt::ItemFlags default_flags = QAbstractItemModel::flags(index);
-
-    if (index.column() == 0) {  // 复选框
-        return default_flags | Qt::ItemIsUserCheckable | Qt::ItemIsSelectable | Qt::ItemIsEnabled;
-    }
-
-    return default_flags | Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+    return Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 }
 
-void Model::addItem(const Item &item) {
-    beginInsertRows(QModelIndex(), m_items.count(), m_items.count());
-    m_items.append(item);
-    endInsertRows();
+Item* Model::itemFromIndex(const QModelIndex &index) {
+    if (index.isValid() && index.row() >= 0 && index.row() < m_items.count())
+        return m_items.at(index.row());
+    return nullptr;
 }
 
-void Model::clear() {
-    beginRemoveRows(QModelIndex(), 0, m_items.count() - 1);
-    m_items.clear();
-    endRemoveRows();
+FileType Model::type(const QModelIndex &index) {
+    Item* item = itemFromIndex(index);
+    if (item)
+        return item->type();
+    return FileType::unknow;
 }
+
+bool Model::checkState(const QModelIndex &index) {
+    Item* item = itemFromIndex(index);
+    if (item)
+        return item->checkState();
+    return false;
+}
+
+QString Model::path(const QModelIndex &index) {
+    Item* item = itemFromIndex(index);
+    if (item)
+        return item->path();
+    return QString();
+}
+
+QImage Model::icon(const QModelIndex &index) {
+    Item* item = itemFromIndex(index);
+    if (item)
+        return item->icon();
+    return QImage();
+}
+
+QString Model::name(const QModelIndex &index) {
+    Item* item = itemFromIndex(index);
+    if (item)
+        return item->name();
+    return QString();
+}
+
+qint64 Model::size(const QModelIndex &index) {
+    Item* item = itemFromIndex(index);
+    if (item)
+        return item->size();
+    return -1;
+}
+
+qint64 Model::modifyTime(const QModelIndex &index) {
+    Item* item = itemFromIndex(index);
+    if (item)
+        return item->modifyTime();
+    return -1;
+}
+
+qint64 Model::createTime(const QModelIndex &index) {
+    Item* item = itemFromIndex(index);
+    if (item)
+        return item->createTime();
+    return -1;
+}
+
+
+
+
