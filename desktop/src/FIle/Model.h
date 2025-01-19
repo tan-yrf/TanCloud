@@ -20,6 +20,10 @@ public:
     QModelIndex parent(const QModelIndex &index) const override;
     Qt::ItemFlags flags(const QModelIndex &index) const override;
 
+public:
+    void addItem(const Item& item);
+    void clear();
+
 private:
     QVector<Item> m_items;
     QStringList m_headers;

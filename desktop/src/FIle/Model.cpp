@@ -92,3 +92,15 @@ Qt::ItemFlags Model::flags(const QModelIndex &index) const {
 
     return default_flags | Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 }
+
+void Model::addItem(const Item &item) {
+    beginInsertRows(QModelIndex(), m_items.count(), m_items.count());
+    m_items.append(item);
+    endInsertRows();
+}
+
+void Model::clear() {
+    beginRemoveRows(QModelIndex(), 0, m_items.count() - 1);
+    m_items.clear();
+    endRemoveRows();
+}
