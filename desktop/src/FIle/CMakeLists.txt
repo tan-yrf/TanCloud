@@ -4,8 +4,11 @@ qt_add_library(File STATIC
     ../../resource/icon/icon.qrc
     File.h File.cpp File.ui
     Model.h Model.cpp
-    View.h View.cpp View.ui
+
     Item.h Item.cpp
+    View.h View.cpp
+    ViewHeader.h ViewHeader.cpp ViewHeader.ui
+    ItemRole.h
 )
 
 target_link_libraries(File PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
