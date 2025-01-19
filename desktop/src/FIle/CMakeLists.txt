@@ -7,6 +7,8 @@ qt_add_library(File STATIC
 
     Item.h Item.cpp
     View.h View.cpp
+    ViewHeader.h ViewHeader.cpp ViewHeader.ui
+    ItemRole.h
 )
 
 target_link_libraries(File PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
