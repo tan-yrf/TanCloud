@@ -1,36 +1,52 @@
 #ifndef ITEM_H
 #define ITEM_H
 
+#include <QObject>
 #include <QString>
+#include <QHash>
+#include <QImage>
+#include <QVariant>
+
 enum FileType {
-    dir,
-    doc,
-    image,
-    unknow
+    dir = 0,
+    doc = 1,
+    image = 2,
+    unknow = -1
 };
 
-class Item {
+class Item : public QObject{
+    Q_OBJECT
 public:
-    Item();
+    Item(QObject* parent = nullptr);
+
+    QVariant data(int role) const;
+    bool setData(int role, const QVariant& value);
+
+    FileType type() const;
+    void setType(FileType type);
+
+    bool checkState()const;
+    void setCheckState(bool state);
 
     QString path() const;
+    void setPath(const QString& path);
+
+    QImage icon() const;
+    void setIcon(const QImage& image);
+
     QString name() const;
+    void setName(const QString& name);
+
     qint64 size() const;
-    bool selecteState() const;
+    void setSize(qint64 size);
+
+    qint64 modifyTime()const;
+    void setModifyTime(qint64 time);
+
     qint64 createTime() const;
-    qint64 lastModifyTime() const;
-    FileType type() const;
-
-    void setSelectState(bool state);
-
+    void setCreateTime(qint64 time);
 private:
-    QString m_path;
-    QString m_name;
-    qint64 m_size = 0;      // 单位是字节，显示时进行换算
-    bool m_selected = false;
-    qint64 m_create_time = 0;
-    qint64 m_last_modify_time = 0;
-    FileType m_type = FileType::unknow;
+    QHash<int, QVariant> m_data;
 };
 
 #endif // ITEM_H
