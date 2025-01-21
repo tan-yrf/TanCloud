@@ -11,3 +11,7 @@ File::File(QWidget *parent)
 File::~File() {
     delete ui;
 }
+
+View *File::view() {
+    return ui->view;
+}

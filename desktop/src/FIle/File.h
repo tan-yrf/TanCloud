@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include "View.h"
+
 namespace Ui {
 class File;
 }
@@ -14,6 +16,8 @@ class File : public QWidget
 public:
     explicit File(QWidget *parent = nullptr);
     ~File();
+
+    View* view();
 
 private:
     Ui::File *ui;
