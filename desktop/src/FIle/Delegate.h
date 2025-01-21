@@ -50,6 +50,7 @@ private:
     QRect m_type_rect;
     QRect m_size_rect;
 
+    QWidget* m_refer_widget = nullptr;                          // 作为参照点的widget
     QPoint m_press_pos;
 
 };

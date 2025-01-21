@@ -10,6 +10,7 @@ qt_add_library(File STATIC
     ViewHeader.h ViewHeader.cpp ViewHeader.ui
     ItemRole.h
     Delegate.h Delegate.cpp
+    CheckBox.h CheckBox.cpp
 )
 
 target_link_libraries(File PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
