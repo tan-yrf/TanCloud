@@ -30,4 +30,11 @@ MainWindow::~MainWindow() {
 void MainWindow::onLoginSuccess() {
     this->show();
     ui->sidebar->updateSpaceSize();
+
+    Item item;
+    item.setCheckState(true);
+    item.setType(FileType::doc);
+    item.setName("hello");
+
+    ui->file->view()->appendItem(&item);
 }

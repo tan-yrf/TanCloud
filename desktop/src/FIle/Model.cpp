@@ -108,6 +108,23 @@ qint64 Model::createTime(const QModelIndex &index) {
     return -1;
 }
 
+void Model::appendItem(Item *item) {
+    beginInsertRows(QModelIndex(), m_items.count(), m_items.count());
+    m_items.append(item);
+    endInsertRows();
+}
+
+void Model::clear() {
+    if (m_items.empty())
+        return;
+    beginRemoveRows(QModelIndex(), 0, m_items.count() - 1);
+    for (auto item : m_items) {
+        delete item;
+    }
+    m_items.clear();
+    endRemoveRows();
+}
+
 
 
 

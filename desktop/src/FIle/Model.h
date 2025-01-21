@@ -32,6 +32,9 @@ public:
     qint64 modifyTime(const QModelIndex& index);
     qint64 createTime(const QModelIndex& index);
 
+    void appendItem(Item* item);
+    void clear();
+
 private:
     QVector<Item*> m_items;
 };

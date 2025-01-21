@@ -10,7 +10,9 @@ enum ItemRole {
     Size,
     ModifyTime,
     Type,
-    CreateTime
+    CreateTime,
+
+    EditRole
 };
 
 inline int roleToInt(ItemRole role) {
@@ -23,6 +25,7 @@ inline int roleToInt(ItemRole role) {
     case ItemRole::ModifyTime: return 6;
     case ItemRole::Type: return 7;
     case ItemRole::CreateTime: return 8;
+    case ItemRole::EditRole: return 9;
     default: return -1;  // 默认返回 -1 表示未知角色
     }
 }

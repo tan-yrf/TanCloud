@@ -10,6 +10,9 @@ class View : public QListView {
 public:
     View(QWidget* parent = nullptr);
 
+    void appendItem(Item* item);
+    void clear();
+
 private:
     Model m_model;
 
