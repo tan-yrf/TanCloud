@@ -2,7 +2,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 qt_add_library(File STATIC
     ../../resource/icon/icon.qrc
-    File.h File.cpp File.ui
+    Home.h Home.cpp Home.ui
 )
 
 target_link_libraries(File PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
