@@ -3,6 +3,13 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 qt_add_library(File STATIC
     ../../resource/icon/icon.qrc
     Home.h Home.cpp Home.ui
+    FileExplorer.h FileExplorer.cpp FileExplorer.ui
+    ViewHeader.h ViewHeader.cpp ViewHeader.ui
+    FileListView.h FileListView.cpp
+    FIleListModel.h FIleListModel.cpp
+    FileListItem.h FileListItem.cpp
+    ListItem.h ListItem.cpp ListItem.ui
+    ImageItem.h ImageItem.cpp ImageItem.ui
 )
 
 target_link_libraries(File PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
