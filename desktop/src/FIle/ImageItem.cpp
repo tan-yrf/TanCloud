@@ -2,7 +2,7 @@
 #include "ui_ImageItem.h"
 
 ImageItem::ImageItem(QWidget *parent)
-    : QFrame(parent)
+    : MetaItem(parent)
     , ui(new Ui::ImageItem)
 {
     ui->setupUi(this);

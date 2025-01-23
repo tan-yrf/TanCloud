@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->setAutoFillBackground(true);
 
     connect(ui->sidebar, &SideBar::switchFile, [&](){
-        ui->widgets->setCurrentWidget(ui->file);
+        ui->widgets->setCurrentWidget(ui->home);
     });
 
     connect(ui->sidebar, &SideBar::switchTransfer, [&](){
@@ -30,11 +30,4 @@ MainWindow::~MainWindow() {
 void MainWindow::onLoginSuccess() {
     this->show();
     ui->sidebar->updateSpaceSize();
-
-    Item item;
-    item.setCheckState(true);
-    item.setType(FileType::doc);
-    item.setName("hello");
-
-    ui->file->view()->appendItem(&item);
 }

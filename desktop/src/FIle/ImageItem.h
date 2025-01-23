@@ -1,13 +1,13 @@
 #ifndef IMAGEITEM_H
 #define IMAGEITEM_H
 
-#include <QFrame>
+#include "MetaItem.h"
 
 namespace Ui {
 class ImageItem;
 }
 
-class ImageItem : public QFrame
+class ImageItem : public MetaItem
 {
     Q_OBJECT
 

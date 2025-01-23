@@ -6,10 +6,14 @@ qt_add_library(File STATIC
     FileExplorer.h FileExplorer.cpp FileExplorer.ui
     ViewHeader.h ViewHeader.cpp ViewHeader.ui
     FileListView.h FileListView.cpp
-    FIleListModel.h FIleListModel.cpp
+    FileListModel.h FileListModel.cpp
     FileListItem.h FileListItem.cpp
     ListItem.h ListItem.cpp ListItem.ui
     ImageItem.h ImageItem.cpp ImageItem.ui
+    FIleItemRole.h
+    MetaItem.h MetaItem.cpp
+    FileType.h
+
 )
 
 target_link_libraries(File PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)

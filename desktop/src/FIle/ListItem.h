@@ -1,18 +1,18 @@
 #ifndef LISTITEM_H
 #define LISTITEM_H
 
-#include <QFrame>
+#include "MetaItem.h"
+#include "FileListItem.h"
 
 namespace Ui {
 class ListItem;
 }
 
-class ListItem : public QFrame
+class ListItem : public MetaItem
 {
     Q_OBJECT
-
 public:
-    explicit ListItem(QWidget *parent = nullptr);
+    explicit ListItem(QWidget *parent = nullptr, const FileListItem& item = FileListItem());
     ~ListItem();
 
 private:

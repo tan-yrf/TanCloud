@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include "FileListModel.h"
+
 namespace Ui {
 class FileExplorer;
 }
@@ -17,6 +19,7 @@ public:
 
 private:
     Ui::FileExplorer *ui;
+    FileListModel m_model;
 };
 
 #endif // FILEEXPLORER_H

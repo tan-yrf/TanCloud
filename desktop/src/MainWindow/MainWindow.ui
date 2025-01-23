@@ -65,7 +65,7 @@
      </item>
      <item>
       <widget class="QStackedWidget" name="widgets">
-       <widget class="File" name="file"/>
+       <widget class="Home" name="home"/>
        <widget class="Transfer" name="transfer"/>
        <widget class="Share" name="share"/>
       </widget>
@@ -82,12 +82,6 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>File</class>
-   <extends>QWidget</extends>
-   <header>FIle.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>Transfer</class>
    <extends>QWidget</extends>
    <header>Transfer.h</header>
@@ -97,6 +91,12 @@
    <class>Share</class>
    <extends>QWidget</extends>
    <header>Share.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Home</class>
+   <extends>QWidget</extends>
+   <header>Home.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
