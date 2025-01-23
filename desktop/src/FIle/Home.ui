@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>File</class>
- <widget class="QWidget" name="File">
+ <class>Home</class>
+ <widget class="QWidget" name="Home">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1005</width>
-    <height>597</height>
+    <width>1112</width>
+    <height>625</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QToolButton" name="upload_2">
    <property name="geometry">
     <rect>
-     <x>1</x>
-     <y>1</y>
+     <x>15</x>
+     <y>14</y>
      <width>100</width>
      <height>30</height>
     </rect>
@@ -57,8 +57,8 @@
   <widget class="QPushButton" name="sort_2">
    <property name="geometry">
     <rect>
-     <x>812</x>
-     <y>80</y>
+     <x>826</x>
+     <y>93</y>
      <width>28</width>
      <height>24</height>
     </rect>
@@ -71,28 +71,11 @@
      <normaloff>:/FIle/sort.svg</normaloff>:/FIle/sort.svg</iconset>
    </property>
   </widget>
-  <widget class="QPushButton" name="refresh_2">
-   <property name="geometry">
-    <rect>
-     <x>950</x>
-     <y>80</y>
-     <width>28</width>
-     <height>24</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="icon">
-    <iconset resource="../../resource/icon/icon.qrc">
-     <normaloff>:/FIle/refresh.svg</normaloff>:/FIle/refresh.svg</iconset>
-   </property>
-  </widget>
   <widget class="QToolButton" name="create_folder_2">
    <property name="geometry">
     <rect>
-     <x>107</x>
-     <y>1</y>
+     <x>121</x>
+     <y>14</y>
      <width>100</width>
      <height>30</height>
     </rect>
@@ -120,11 +103,28 @@
     <enum>Qt::ToolButtonTextBesideIcon</enum>
    </property>
   </widget>
+  <widget class="QPushButton" name="refresh_2">
+   <property name="geometry">
+    <rect>
+     <x>964</x>
+     <y>93</y>
+     <width>28</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="../../resource/icon/icon.qrc">
+     <normaloff>:/FIle/refresh.svg</normaloff>:/FIle/refresh.svg</iconset>
+   </property>
+  </widget>
   <widget class="QPushButton" name="filter_2">
    <property name="geometry">
     <rect>
-     <x>778</x>
-     <y>80</y>
+     <x>792</x>
+     <y>93</y>
      <width>28</width>
      <height>24</height>
     </rect>
@@ -140,8 +140,8 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>846</x>
-     <y>77</y>
+     <x>860</x>
+     <y>90</y>
      <width>98</width>
      <height>26</height>
     </rect>
@@ -182,68 +182,22 @@
     </item>
    </layout>
   </widget>
-  <widget class="QScrollArea" name="scrollArea">
+  <widget class="FileExplorer" name="explorer" native="true">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>150</y>
-     <width>901</width>
-     <height>401</height>
+     <x>30</x>
+     <y>160</y>
+     <width>1011</width>
+     <height>391</height>
     </rect>
    </property>
-   <property name="widgetResizable">
-    <bool>true</bool>
-   </property>
-   <widget class="QWidget" name="scrollAreaWidgetContents">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>899</width>
-      <height>399</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="ViewHeader" name="view_header" native="true">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>40</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>40</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="View" name="view" native="true"/>
-     </item>
-    </layout>
-   </widget>
   </widget>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>View</class>
+   <class>FileExplorer</class>
    <extends>QWidget</extends>
-   <header>View.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>ViewHeader</class>
-   <extends>QWidget</extends>
-   <header>ViewHeader.h</header>
+   <header>FileExplorer.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
