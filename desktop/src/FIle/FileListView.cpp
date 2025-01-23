@@ -4,6 +4,7 @@
 
 #include "FileListView.h"
 #include "ListItem.h"
+#include "ImageItem.h"
 
 FileListView::FileListView(QWidget *parent)
     : QWidget(parent),
@@ -50,15 +51,41 @@ void FileListView::update() {
         delete item->widget();
         delete item;
     }
-
-    // 根据模型和类型重新添加项
     if (m_model == nullptr)
         return;
 
-    for (int i = 0; i < m_model->count(); i++) {
-        if (m_pattern == ViewPattern::List) {
+    // 根据模型和类型重新添加项
+    if (m_pattern == ViewPattern::List) {
+        int row = 0;
+        for (int i = 0; i < m_model->count(); i++) {
             ListItem* item = new ListItem(this, m_model->at(i));
-            m_layout.addWidget(item);
+            m_layout.addWidget(item, row, 0);
+            row++;
+        }
+    }
+
+    if (m_pattern == ViewPattern::Image) {
+        int space = 100;
+        m_layout.setSpacing(space);
+        int contain_width = m_area.viewport()->width();
+        int item_width = 150;   // 每一项的宽度,后续如果有需要再改成动态获取
+
+        // 计算能够容纳多少列
+        int colums = contain_width / (item_width + space);
+        if (colums == 0)
+            colums = 1;
+
+        int row = 0;
+        int col = 0;
+
+        for (int i = 0; i < m_model->count(); i++) {
+            ImageItem* item = new ImageItem(this, m_model->at(i));
+            m_layout.addWidget(item, row, col);
+            col++;
+            if (col >= colums) {    // 下一行
+                col = 0;
+                row++;
+            }
         }
     }
 }

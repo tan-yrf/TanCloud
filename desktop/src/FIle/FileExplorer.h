@@ -17,6 +17,9 @@ public:
     explicit FileExplorer(QWidget *parent = nullptr);
     ~FileExplorer();
 
+    void setListPattern();
+    void setImagePattern();
+
 private:
     Ui::FileExplorer *ui;
     FileListModel m_model;

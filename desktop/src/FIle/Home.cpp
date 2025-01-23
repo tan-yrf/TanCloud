@@ -12,3 +12,14 @@ Home::~Home()
 {
     delete ui;
 }
+
+void Home::on_list_clicked() {
+    ui->explorer->setListPattern();
+}
+
+
+
+void Home::on_image_clicked() {
+    ui->explorer->setImagePattern();
+}
+

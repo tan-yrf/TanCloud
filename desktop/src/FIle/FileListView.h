@@ -3,14 +3,13 @@
 
 #include <QWidget>
 #include <QScrollArea>
-#include <QVBoxLayout>
+#include <QGridLayout>
 
 #include "FileListModel.h"
 
 enum ViewPattern{
     List,
-    Thumbnail,
-    LargeImage
+    Image
 };
 
 class FileListView : public QWidget {
@@ -28,7 +27,8 @@ private:
     FileListModel* m_model = nullptr;
     QScrollArea m_area;
     QWidget m_content_widget;
-    QVBoxLayout m_layout;
+    QGridLayout m_layout;
+
     ViewPattern m_pattern = ViewPattern::List;
 };
 
