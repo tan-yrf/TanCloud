@@ -23,3 +23,8 @@ void Home::on_image_clicked() {
     ui->explorer->setImagePattern();
 }
 
+
+void Home::on_refresh_clicked() {
+    ui->explorer->refresh();
+}
+

@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "FileListModel.h"
+#include "RightMenu.h"
 
 namespace Ui {
 class FileExplorer;
@@ -20,9 +21,15 @@ public:
     void setListPattern();
     void setImagePattern();
 
+    void refresh();
+
+protected:
+    void mousePressEvent(QMouseEvent* event) override;
+
 private:
     Ui::FileExplorer *ui;
     FileListModel m_model;
+    RightMenu m_menu;
 };
 
 #endif // FILEEXPLORER_H

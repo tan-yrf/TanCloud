@@ -20,6 +20,8 @@ private slots:
 
     void on_image_clicked();
 
+    void on_refresh_clicked();
+
 private:
     Ui::Home *ui;
 };

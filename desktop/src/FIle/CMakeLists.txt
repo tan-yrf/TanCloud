@@ -14,6 +14,7 @@ qt_add_library(File STATIC
     MetaItem.h MetaItem.cpp
     FileType.h
     FileListView.h FileListView.cpp FileListView.ui
+    RightMenu.h RightMenu.cpp RightMenu.ui
 
 
 )

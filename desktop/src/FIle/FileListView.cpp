@@ -47,6 +47,35 @@ void FileListView::setImagePattern() {
     update();
 }
 
+void FileListView::refresh() {
+    update();
+}
+
+void FileListView::check(QPointF position) {
+    QPoint pos = position.toPoint();
+    QPoint local_pos = ui->content->mapFromGlobal(pos);
+
+    QWidget* child = ui->content->childAt(local_pos);
+    if (child == nullptr)
+        return;
+
+    // 向上查找父控件，直到找到 ListItem 或 ImageItem
+    QWidget* current = child;
+    while (current) {
+        ListItem* list_item = qobject_cast<ListItem*>(current);
+        ImageItem* image_item = qobject_cast<ImageItem*>(current);
+
+        if(list_item) {
+            list_item->check();
+            break;
+        } else if(image_item) {
+            image_item->check();
+            break;
+        }
+        current = current->parentWidget();
+    }
+}
+
 void FileListView::update() {
     QLayoutItem* item;
     while((item = ui->content->layout()->takeAt(0)) != nullptr) {
@@ -61,7 +90,7 @@ void FileListView::update() {
     if (m_pattern == Pattern::List) {
         int row = 0;
         for (int i = 0; i < m_model->count(); i++) {
-            ListItem* item = new ListItem(this, m_model->at(i));
+            ListItem* item = new ListItem(this, m_model, i);
             m_layout->addWidget(item, row, 0);
             row++;
         }
@@ -82,7 +111,7 @@ void FileListView::update() {
         int col = 0;
 
         for (int i = 0; i < m_model->count(); i++) {
-            ImageItem* item = new ImageItem(this, m_model->at(i));
+            ImageItem* item = new ImageItem(this, m_model, i);
             m_layout->addWidget(item, row, col);
             col++;
             if (col >= colums) {    // 下一行
@@ -91,6 +120,10 @@ void FileListView::update() {
             }
         }
     }
+}
+
+void FileListView::resizeEvent(QResizeEvent *event) {
+    update();
 }
 
 

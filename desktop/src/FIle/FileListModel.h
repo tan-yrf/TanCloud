@@ -19,6 +19,7 @@ public:
     void appendList(const QVector<FileListItem>& items);
     void clear();
 
+    bool setData(int index, int role, const QVariant& value);
 signals:
     void dataChanged();
 
