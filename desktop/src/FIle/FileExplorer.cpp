@@ -33,10 +33,10 @@ FileExplorer::~FileExplorer()
 }
 
 void FileExplorer::setListPattern() {
-    ui->list_view->setPattern(ViewPattern::List);
+    ui->list_view->setListPattern();
 }
 
 void FileExplorer::setImagePattern() {
-    ui->list_view->setPattern(ViewPattern::Image);
+    ui->list_view->setImagePattern();
 }
 

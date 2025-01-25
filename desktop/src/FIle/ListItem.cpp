@@ -13,7 +13,7 @@ ListItem::ListItem(QWidget *parent, const FileListItem &item)
 
     ui->check_box->setChecked(item.data(ItemRole::CheckBox).toBool());
 
-    QPixmap pixmap = QPixmap::fromImage(item.data(ItemRole::Icon).value<QImage>());
+    QPixmap pixmap = QPixmap::fromImage(item.data(ItemRole::Icon).value<QImage>()).scaled(ui->image->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     ui->image->setPixmap(pixmap);
 
     ui->lab_name->setText(item.data(ItemRole::Name).toString());

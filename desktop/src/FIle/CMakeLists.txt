@@ -5,7 +5,7 @@ qt_add_library(File STATIC
     Home.h Home.cpp Home.ui
     FileExplorer.h FileExplorer.cpp FileExplorer.ui
     ViewHeader.h ViewHeader.cpp ViewHeader.ui
-    FileListView.h FileListView.cpp
+
     FileListModel.h FileListModel.cpp
     FileListItem.h FileListItem.cpp
     ListItem.h ListItem.cpp ListItem.ui
@@ -13,6 +13,8 @@ qt_add_library(File STATIC
     FIleItemRole.h
     MetaItem.h MetaItem.cpp
     FileType.h
+    FileListView.h FileListView.cpp FileListView.ui
+
 
 )
 

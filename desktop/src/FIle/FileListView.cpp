@@ -1,24 +1,20 @@
-#include <QPainter>
-#include <QStyleOptionViewItem>
-#include <QGridLayout>
-
 #include "FileListView.h"
-#include "ListItem.h"
+#include "ui_FileListView.h"
 #include "ImageItem.h"
+#include "ListItem.h"
 
 FileListView::FileListView(QWidget *parent)
-    : QWidget(parent),
-    m_content_widget(this),
-    m_layout(&m_content_widget){
+    : QFrame(parent)
+    , ui(new Ui::FileListView)
+{
+    ui->setupUi(this);
+}
 
-    m_content_widget.setLayout(&m_layout);
-
-    m_area.setWidget(&m_content_widget);
-    m_area.setWidgetResizable(true);
-
-    QGridLayout* main_layout = new QGridLayout(this);
-    main_layout->addWidget(&m_area, 0, 0);
-    this->setLayout(main_layout);
+FileListView::~FileListView() {
+    delete ui;
+    if (m_model) {
+        delete m_model;
+    }
 }
 
 void FileListView::setModel(FileListModel *model) {
@@ -37,17 +33,23 @@ void FileListView::setModel(FileListModel *model) {
     update();
 }
 
-void FileListView::setPattern(ViewPattern pattern) {
-    if (m_pattern == pattern)
+void FileListView::setListPattern() {
+    if (m_pattern == Pattern::List)
         return;
-    m_pattern = pattern;
+    m_pattern = Pattern::List;
+    update();
+}
+
+void FileListView::setImagePattern() {
+    if (m_pattern == Pattern::Image)
+        return;
+    m_pattern = Pattern::Image;
     update();
 }
 
 void FileListView::update() {
-    // 清空原有项
     QLayoutItem* item;
-    while((item = m_layout.takeAt(0)) != nullptr) {
+    while((item = ui->content->layout()->takeAt(0)) != nullptr) {
         delete item->widget();
         delete item;
     }
@@ -55,19 +57,20 @@ void FileListView::update() {
         return;
 
     // 根据模型和类型重新添加项
-    if (m_pattern == ViewPattern::List) {
+    QGridLayout* m_layout = static_cast<QGridLayout*>(ui->content->layout());
+    if (m_pattern == Pattern::List) {
         int row = 0;
         for (int i = 0; i < m_model->count(); i++) {
             ListItem* item = new ListItem(this, m_model->at(i));
-            m_layout.addWidget(item, row, 0);
+            m_layout->addWidget(item, row, 0);
             row++;
         }
     }
 
-    if (m_pattern == ViewPattern::Image) {
-        int space = 100;
-        m_layout.setSpacing(space);
-        int contain_width = m_area.viewport()->width();
+    if (m_pattern == Pattern::Image) {
+        int space = 50;
+        m_layout->setSpacing(space);
+        int contain_width = ui->content->width();
         int item_width = 150;   // 每一项的宽度,后续如果有需要再改成动态获取
 
         // 计算能够容纳多少列
@@ -80,7 +83,7 @@ void FileListView::update() {
 
         for (int i = 0; i < m_model->count(); i++) {
             ImageItem* item = new ImageItem(this, m_model->at(i));
-            m_layout.addWidget(item, row, col);
+            m_layout->addWidget(item, row, col);
             col++;
             if (col >= colums) {    // 下一行
                 col = 0;
@@ -89,3 +92,5 @@ void FileListView::update() {
         }
     }
 }
+
+
