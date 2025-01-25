@@ -29,3 +29,9 @@ void FileListModel::clear() {
     m_items.clear();
     emit dataChanged();
 }
+
+bool FileListModel::setData(int index, int role, const QVariant &value) {
+    if (index < 0 || index > m_items.count())
+        return false;
+    return m_items[index].setData(role, value);
+}

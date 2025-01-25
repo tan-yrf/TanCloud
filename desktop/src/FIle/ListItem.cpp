@@ -4,16 +4,23 @@
 #include "ui_ListItem.h"
 #include "FileType.h"
 #include "FileItemRole.h"
+#include "FileListItem.h"
 
-ListItem::ListItem(QWidget *parent, const FileListItem &item)
+ListItem::ListItem(QWidget *parent, FileListModel *model, int index)
     : MetaItem(parent)
     , ui(new Ui::ListItem)
 {
     ui->setupUi(this);
 
+    if (model == nullptr || index < 0 || index > model->count())
+        return;
+    m_model = model;
+    m_index = index;
+
+    FileListItem item = model->at(index);
     ui->check_box->setChecked(item.data(ItemRole::CheckBox).toBool());
 
-    QPixmap pixmap = QPixmap::fromImage(item.data(ItemRole::Icon).value<QImage>());
+    QPixmap pixmap = QPixmap::fromImage(item.data(ItemRole::Icon).value<QImage>()).scaled(ui->image->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     ui->image->setPixmap(pixmap);
 
     ui->lab_name->setText(item.data(ItemRole::Name).toString());
@@ -45,8 +52,32 @@ ListItem::ListItem(QWidget *parent, const FileListItem &item)
         size_text += QString("%1%2").arg(s, 0, 'f', 1).arg("G");
     }
     ui->lab_size->setText(size_text);
+
+    // 默认隐藏复选框，只有鼠标悬浮和勾选复选框时才显示
+    ui->check_box->setVisible(false);
 }
 
 ListItem::~ListItem() {
     delete ui;
 }
+
+void ListItem::check() {
+    ui->check_box->setChecked(true);
+}
+
+void ListItem::enterEvent(QEnterEvent *event) {
+    ui->check_box->setVisible(true);
+}
+
+void ListItem::leaveEvent(QEvent *event) {
+    ui->check_box->setVisible(ui->check_box->checkState());
+}
+
+void ListItem::on_check_box_checkStateChanged(int state) {
+    if (state == Qt::Checked) {
+        ui->check_box->setVisible(true);
+    } else {
+        ui->check_box->setVisible(false);
+    }
+}
+

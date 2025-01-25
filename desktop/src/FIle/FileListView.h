@@ -1,35 +1,41 @@
 #ifndef FILELISTVIEW_H
 #define FILELISTVIEW_H
 
-#include <QWidget>
-#include <QScrollArea>
-#include <QVBoxLayout>
+#include <QFrame>
 
 #include "FileListModel.h"
+namespace Ui {
+class FileListView;
+}
 
-enum ViewPattern{
-    List,
-    Thumbnail,
-    LargeImage
-};
-
-class FileListView : public QWidget {
+class FileListView : public QFrame
+{
     Q_OBJECT
+
 public:
-    explicit FileListView(QWidget* parent = nullptr);
+    explicit FileListView(QWidget *parent = nullptr);
+    ~FileListView();
 
     void setModel(FileListModel* model);
-    void setPattern(ViewPattern pattern);
-
-private slots:
-    void update();
+    void setListPattern();
+    void setImagePattern();
+    void refresh();
+    void check(QPointF position);
 
 private:
+    void update();
+
+protected:
+    void resizeEvent(QResizeEvent* event) override;
+
+private:
+    Ui::FileListView *ui;
     FileListModel* m_model = nullptr;
-    QScrollArea m_area;
-    QWidget m_content_widget;
-    QVBoxLayout m_layout;
-    ViewPattern m_pattern = ViewPattern::List;
+    enum Pattern{
+        List,
+        Image
+    };
+    Pattern m_pattern = Pattern::List;
 };
 
 #endif // FILELISTVIEW_H

@@ -15,6 +15,13 @@ public:
     explicit Home(QWidget *parent = nullptr);
     ~Home();
 
+private slots:
+    void on_list_clicked();
+
+    void on_image_clicked();
+
+    void on_refresh_clicked();
+
 private:
     Ui::Home *ui;
 };
