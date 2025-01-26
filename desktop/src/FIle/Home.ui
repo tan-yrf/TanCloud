@@ -13,185 +13,26 @@
   <property name="windowTitle">
    <string>Frame</string>
   </property>
-  <widget class="QFrame" name="frame_2">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>56</y>
-     <width>1092</width>
-     <height>50</height>
-    </rect>
-   </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>0</width>
-     <height>50</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>16777215</width>
-     <height>50</height>
-    </size>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-   <widget class="QFrame" name="frame_3">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>0</y>
-      <width>104</width>
-      <height>44</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QCheckBox" name="check_box">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>50</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>50</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>全选</string>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="toolTip">
-        <string>删除</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="../../resource/icon/icon.qrc">
-         <normaloff>:/FIle/delete.svg</normaloff>:/FIle/delete.svg</iconset>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QFrame" name="frame_4">
-    <property name="geometry">
-     <rect>
-      <x>710</x>
-      <y>0</y>
-      <width>241</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <widget class="QPushButton" name="refresh">
-     <property name="geometry">
-      <rect>
-       <x>210</x>
-       <y>20</y>
-       <width>28</width>
-       <height>24</height>
-      </rect>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QFrame" name="frame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <property name="toolTip">
-      <string>刷新</string>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>50</height>
+      </size>
      </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../../resource/icon/icon.qrc">
-       <normaloff>:/FIle/refresh.svg</normaloff>:/FIle/refresh.svg</iconset>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="filter_2">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>20</y>
-       <width>28</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>筛选</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../../resource/icon/icon.qrc">
-       <normaloff>:/FIle/filter.svg</normaloff>:/FIle/filter.svg</iconset>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="sort">
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>20</y>
-       <width>28</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>排序</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../../resource/icon/icon.qrc">
-       <normaloff>:/FIle/sort.svg</normaloff>:/FIle/sort.svg</iconset>
-     </property>
-    </widget>
-    <widget class="QFrame" name="frame_5">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>10</y>
-       <width>111</width>
-       <height>31</height>
-      </rect>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>50</height>
+      </size>
      </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -199,172 +40,315 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <widget class="QWidget" name="layoutWidget">
+     <widget class="QToolButton" name="upload">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>0</y>
-        <width>98</width>
-        <height>26</height>
+        <y>10</y>
+        <width>100</width>
+        <height>30</height>
        </rect>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_8">
-       <item>
-        <widget class="QPushButton" name="list">
-         <property name="toolTip">
-          <string>列表</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="../../resource/icon/icon.qrc">
-           <normaloff>:/FIle/list.svg</normaloff>:/FIle/list.svg</iconset>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="image">
-         <property name="toolTip">
-          <string>缩略图</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="../../resource/icon/icon.qrc">
-           <normaloff>:/FIle/cell.svg</normaloff>:/FIle/cell.svg</iconset>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </widget>
-   </widget>
-  </widget>
-  <widget class="QFrame" name="frame">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>0</y>
-     <width>1092</width>
-     <height>50</height>
-    </rect>
-   </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>0</width>
-     <height>50</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>16777215</width>
-     <height>50</height>
-    </size>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-   <widget class="QToolButton" name="upload">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>100</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>100</width>
-      <height>30</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>100</width>
-      <height>30</height>
-     </size>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QToolButton {
+      <property name="minimumSize">
+       <size>
+        <width>100</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QToolButton {
     background-color: #1f2026;  /* 设置背景颜色 */
     color: #ffffff;             /* 设置字体颜色 */
     border: none;               /* 去除边框 */
     padding: 5px;               /* 设置内边距 */
 }
 </string>
-    </property>
-    <property name="text">
-     <string>上传文件</string>
-    </property>
-    <property name="icon">
-     <iconset resource="../../resource/icon/icon.qrc">
-      <normaloff>:/FIle/plus.svg</normaloff>:/FIle/plus.svg</iconset>
-    </property>
-    <property name="toolButtonStyle">
-     <enum>Qt::ToolButtonTextBesideIcon</enum>
-    </property>
-   </widget>
-   <widget class="QToolButton" name="create_folder">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>10</y>
-      <width>100</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>100</width>
-      <height>30</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>100</width>
-      <height>30</height>
-     </size>
-    </property>
-    <property name="text">
-     <string>新建文件夹</string>
-    </property>
-    <property name="icon">
-     <iconset resource="../../resource/icon/icon.qrc">
-      <normaloff>:/FIle/create_folder.svg</normaloff>:/FIle/create_folder.svg</iconset>
-    </property>
-    <property name="toolButtonStyle">
-     <enum>Qt::ToolButtonTextBesideIcon</enum>
-    </property>
-   </widget>
-  </widget>
-  <widget class="Explorer" name="explorer">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>140</y>
-     <width>871</width>
-     <height>351</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-  </widget>
+      </property>
+      <property name="text">
+       <string>上传文件</string>
+      </property>
+      <property name="icon">
+       <iconset resource="../../resource/icon/icon.qrc">
+        <normaloff>:/FIle/plus.svg</normaloff>:/FIle/plus.svg</iconset>
+      </property>
+      <property name="toolButtonStyle">
+       <enum>Qt::ToolButtonTextBesideIcon</enum>
+      </property>
+     </widget>
+     <widget class="QToolButton" name="create_folder">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>10</y>
+        <width>100</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>100</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>新建文件夹</string>
+      </property>
+      <property name="icon">
+       <iconset resource="../../resource/icon/icon.qrc">
+        <normaloff>:/FIle/create_folder.svg</normaloff>:/FIle/create_folder.svg</iconset>
+      </property>
+      <property name="toolButtonStyle">
+       <enum>Qt::ToolButtonTextBesideIcon</enum>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame_2">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QFrame" name="frame_3">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>0</y>
+        <width>104</width>
+        <height>44</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QCheckBox" name="check_box">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>50</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>50</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>全选</string>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton">
+         <property name="toolTip">
+          <string>删除</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../../resource/icon/icon.qrc">
+           <normaloff>:/FIle/delete.svg</normaloff>:/FIle/delete.svg</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QFrame" name="frame_4">
+      <property name="geometry">
+       <rect>
+        <x>710</x>
+        <y>0</y>
+        <width>241</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QPushButton" name="refresh">
+       <property name="geometry">
+        <rect>
+         <x>210</x>
+         <y>20</y>
+         <width>28</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>刷新</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../../resource/icon/icon.qrc">
+         <normaloff>:/FIle/refresh.svg</normaloff>:/FIle/refresh.svg</iconset>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="filter_2">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>20</y>
+         <width>28</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>筛选</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../../resource/icon/icon.qrc">
+         <normaloff>:/FIle/filter.svg</normaloff>:/FIle/filter.svg</iconset>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="sort">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>20</y>
+         <width>28</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>排序</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../../resource/icon/icon.qrc">
+         <normaloff>:/FIle/sort.svg</normaloff>:/FIle/sort.svg</iconset>
+       </property>
+      </widget>
+      <widget class="QFrame" name="frame_5">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>10</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>0</y>
+          <width>98</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <item>
+          <widget class="QPushButton" name="list">
+           <property name="toolTip">
+            <string>列表</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="../../resource/icon/icon.qrc">
+             <normaloff>:/FIle/list.svg</normaloff>:/FIle/list.svg</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="image">
+           <property name="toolTip">
+            <string>缩略图</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="../../resource/icon/icon.qrc">
+             <normaloff>:/FIle/cell.svg</normaloff>:/FIle/cell.svg</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="Explorer" name="explorer">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <customwidgets>
   <customwidget>

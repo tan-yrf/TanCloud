@@ -2,6 +2,8 @@
 #define IMAGEITEM_H
 
 #include <QFrame>
+#include <QEnterEvent>
+#include <QEvent>
 
 #include "Model.h"
 
@@ -22,6 +24,9 @@ public:
 protected:
     void enterEvent(QEnterEvent* event) override;
     void leaveEvent(QEvent* event) override;
+
+private slots:
+    void on_check_box_stateChanged(int arg1);
 
 private:
     Ui::ImageItem *ui;

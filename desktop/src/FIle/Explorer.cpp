@@ -138,7 +138,7 @@ void Explorer::cd(const QString &path) {
                 items.append(item);
             }
             m_model.appendList(items);
-            refresh();
+            update();
         }
     } catch(Exception e) {
         e.showMessage();

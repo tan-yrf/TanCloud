@@ -21,6 +21,9 @@ protected:
     void enterEvent(QEnterEvent* event) override;
     void leaveEvent(QEvent* event) override;
 
+private slots:
+    void on_check_box_stateChanged(int state);
+
 private:
     Ui::ListItem *ui;
     Model* m_model = nullptr;

@@ -1,20 +1,21 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include <QObject>
+
 #include "Item.h"
 
-class Model
-{
+class Model : public QObject {
+    Q_OBJECT
 public:
     explicit Model();
 
-    Item at(int index) const;
-    bool setData(int index, int role, const QVariant& value);
     int count() const;
+    Item at(int index) const;
     void append(const Item& item);
     void appendList(const QVector<Item>& items);
     void clear();
-
+    bool setData(int index, int role, const QVariant& value);
 signals:
     void dataChanged();
 private:
