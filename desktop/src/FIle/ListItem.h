@@ -17,6 +17,8 @@ public:
     explicit ListItem(QWidget *parent = nullptr, Model* model = nullptr, int index = -1);
     ~ListItem();
 
+    void check();
+
 protected:
     void enterEvent(QEnterEvent* event) override;
     void leaveEvent(QEvent* event) override;

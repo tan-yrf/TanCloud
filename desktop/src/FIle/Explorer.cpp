@@ -40,16 +40,34 @@ void Explorer::setImagePattern() {
     update();
 }
 
-void Explorer::check(QPointF position)
-{
+void Explorer::check(QPointF position) {
+    QPoint pos = position.toPoint();
+    QPoint local_pos = ui->content->mapFromGlobal(pos);
 
+    QWidget* child = ui->content->childAt(local_pos);
+    if (child == nullptr)
+        return;
+
+    // 向上查找父控件，直到找到 ListItem 或 ImageItem
+    QWidget* current = child;
+    while (current) {
+        ListItem* list_item = qobject_cast<ListItem*>(current);
+        ImageItem* image_item = qobject_cast<ImageItem*>(current);
+
+        if(list_item) {
+            list_item->check();
+            break;
+        } else if(image_item) {
+            image_item->check();
+            break;
+        }
+        current = current->parentWidget();
+    }
 }
 
 void Explorer::refresh() {
     cd(m_current_path);
 }
-
-
 
 void Explorer::update() {
     QLayoutItem* item;
@@ -63,12 +81,15 @@ void Explorer::update() {
     m_layout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 
     if (m_pattern == Pattern::List) {
+        m_layout->setSpacing(5);
         int row = 0;
         for (int i = 0; i < m_model.count(); i++) {
             ListItem* item = new ListItem(this, &m_model, i);
             m_layout->addWidget(item, row, 0);
             row++;
         }
+        // 添加一个自适应的弹簧
+        m_layout->addItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding), row, 0);
     }
 
     if (m_pattern == Pattern::Image) {

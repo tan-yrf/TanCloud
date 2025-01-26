@@ -16,3 +16,13 @@ Home::~Home()
 void Home::root() const {
     ui->explorer->cd("");
 }
+
+void Home::on_list_clicked() {
+    ui->explorer->setListPattern();
+}
+
+
+void Home::on_image_clicked() {
+    ui->explorer->setImagePattern();
+}
+

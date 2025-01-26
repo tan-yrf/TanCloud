@@ -58,6 +58,10 @@ ListItem::~ListItem() {
     delete ui;
 }
 
+void ListItem::check() {
+    ui->check_box->setChecked(true);
+}
+
 void ListItem::enterEvent(QEnterEvent *event) {
     ui->check_box->setVisible(true);
 }

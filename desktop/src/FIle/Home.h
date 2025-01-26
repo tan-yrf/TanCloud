@@ -17,6 +17,11 @@ public:
 
     void root() const;
 
+private slots:
+    void on_list_clicked();
+
+    void on_image_clicked();
+
 private:
     Ui::Home *ui;
 };
