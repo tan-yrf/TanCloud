@@ -22,7 +22,10 @@ public:
     void refresh();
     void update();
     void cd(const QString& path);
-
+protected:
+    void resizeEvent(QResizeEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
 private:
     bool isImage(const QString& file_name) const;
 private:

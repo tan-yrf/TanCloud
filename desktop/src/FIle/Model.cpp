@@ -34,3 +34,9 @@ bool Model::setData(int index, int role, const QVariant &value) {
         return false;
     return m_items[index].setData(role, value);
 }
+
+void Model::resetAllCheckBoxState() {
+    for (auto& item : m_items) {
+        item.setData(ItemRole::CheckState, false);
+    }
+}

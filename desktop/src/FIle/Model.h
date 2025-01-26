@@ -16,6 +16,7 @@ public:
     void appendList(const QVector<Item>& items);
     void clear();
     bool setData(int index, int role, const QVariant& value);
+    void resetAllCheckBoxState();
 signals:
     void dataChanged();
 private:

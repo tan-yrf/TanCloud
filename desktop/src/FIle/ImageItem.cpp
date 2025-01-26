@@ -12,7 +12,7 @@ ImageItem::ImageItem(QWidget *parent, Model *model, int index)
     m_index = index;
 
     Item item = model->at(index);
-    ui->check_box->setChecked(item.data(ItemRole::CheckState).toBool());
+    ui->check_box->setChecked(false);
 
     QPixmap pixmap = QPixmap::fromImage(item.data(ItemRole::Icon).value<QImage>()).scaled(ui->image->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     ui->image->setPixmap(pixmap);

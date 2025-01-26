@@ -30,6 +30,7 @@ void Explorer::setListPattern() {
     if(m_pattern == Pattern::List)
         return;
     m_pattern = Pattern::List;
+    m_model.resetAllCheckBoxState();
     update();
 }
 
@@ -37,6 +38,7 @@ void Explorer::setImagePattern() {
     if (m_pattern == Pattern::Image)
         return;
     m_pattern = Pattern::Image;
+    m_model.resetAllCheckBoxState();
     update();
 }
 
@@ -164,6 +166,28 @@ void Explorer::cd(const QString &path) {
     } catch(Exception e) {
         e.showMessage();
     }
+}
+
+void Explorer::resizeEvent(QResizeEvent *event) {
+    update();
+}
+
+void Explorer::mousePressEvent(QMouseEvent *event) {
+    if (event->button() != Qt::RightButton)
+        return QWidget::mousePressEvent(event);
+    QPoint pos = ui->view->mapFromParent(event->pos());
+    if (ui->view->rect().contains(pos) == false)
+        return QWidget::mousePressEvent(event);
+
+    QPointF global_pos = event->globalPosition();
+    //m_menu.showAtPosition(global_pos);
+    event->accept();
+    check(global_pos);
+    return QWidget::mousePressEvent(event);
+}
+
+void Explorer::mouseDoubleClickEvent(QMouseEvent *event) {
+
 }
 
 bool Explorer::isImage(const QString &file_name) const {
