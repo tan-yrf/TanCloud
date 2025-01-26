@@ -15,6 +15,9 @@ public:
     explicit Home(QWidget *parent = nullptr);
     ~Home();
 
+    // 回到根目录
+    void root();
+
 private slots:
     void on_list_clicked();
 

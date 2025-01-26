@@ -22,7 +22,7 @@ protected:
     void leaveEvent(QEvent* event) override;
 
 private slots:
-    void on_check_box_checkStateChanged(int state);
+    void on_check_box_stateChanged(int arg1);
 
 private:
     Ui::ListItem *ui;

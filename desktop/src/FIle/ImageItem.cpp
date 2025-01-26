@@ -46,13 +46,15 @@ void ImageItem::leaveEvent(QEvent *event) {
     ui->check_box->setVisible(ui->check_box->checkState());
 }
 
-void ImageItem::on_check_box_checkStateChanged(int state) {
+void ImageItem::on_check_box_stateChanged(int state) {
+    bool res = false;
     if (state == Qt::Checked) {
         ui->check_box->setVisible(true);
-        emit checkBoxStateChanged(true);
     } else {
         ui->check_box->setVisible(false);
-        emit checkBoxStateChanged(false);
+    }
+    if (m_model){
+        m_model->setData(m_index, ItemRole::CheckBox, res);
     }
 }
 

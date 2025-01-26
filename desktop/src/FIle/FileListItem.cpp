@@ -1,6 +1,8 @@
 #include "FileListItem.h"
 
-FileListItem::FileListItem() {}
+FileListItem::FileListItem() {
+
+}
 
 QVariant FileListItem::data(int role) const {
     if (role < 0 || m_data.contains(role) == false)

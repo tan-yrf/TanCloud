@@ -22,12 +22,15 @@ public:
     void setImagePattern();
 
     void refresh();
+    void cd(const QString path);
 
 protected:
     void mousePressEvent(QMouseEvent* event) override;
-
+private:
+    bool isImage(const QString& file_name) const;
 private:
     Ui::FileExplorer *ui;
+    QString m_current_path;
     FileListModel m_model;
     RightMenu m_menu;
 };
