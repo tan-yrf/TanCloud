@@ -44,7 +44,7 @@ pub async fn handle_get_directory_info(
     };
   
     let response = match get_directory_info(verify_res.root_path, verify_res.target) {
-        Ok(vec_files_info) => HttpResponse::new(ErrorCode::Success, json!(vec_files_info)),
+        Ok(vec_files_info) => HttpResponse::new(ErrorCode::Success, json!({"array": vec_files_info})),
         Err(_) => HttpResponse::new(ErrorCode::Unknown, json!({})),
     };
 
