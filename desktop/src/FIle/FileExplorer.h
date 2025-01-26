@@ -26,6 +26,7 @@ public:
 
 protected:
     void mousePressEvent(QMouseEvent* event) override;
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
 private:
     bool isImage(const QString& file_name) const;
 private:
