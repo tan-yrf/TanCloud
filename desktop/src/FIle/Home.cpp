@@ -13,6 +13,10 @@ Home::~Home()
     delete ui;
 }
 
+void Home::root() {
+    ui->explorer->cd("");
+}
+
 void Home::on_list_clicked() {
     ui->explorer->setListPattern();
 }

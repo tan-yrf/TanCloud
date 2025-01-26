@@ -19,6 +19,6 @@ qt_add_library(File STATIC
 
 )
 
-target_link_libraries(File PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(File PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Exception Config Network)
 target_include_directories(File PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 

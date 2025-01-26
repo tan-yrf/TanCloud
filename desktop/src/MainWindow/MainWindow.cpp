@@ -30,4 +30,5 @@ MainWindow::~MainWindow() {
 void MainWindow::onLoginSuccess() {
     this->show();
     ui->sidebar->updateSpaceSize();
+    ui->home->root();
 }

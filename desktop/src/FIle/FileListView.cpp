@@ -87,6 +87,8 @@ void FileListView::update() {
 
     // 根据模型和类型重新添加项
     QGridLayout* m_layout = static_cast<QGridLayout*>(ui->content->layout());
+    m_layout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+
     if (m_pattern == Pattern::List) {
         int row = 0;
         for (int i = 0; i < m_model->count(); i++) {

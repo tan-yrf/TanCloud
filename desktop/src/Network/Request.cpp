@@ -158,7 +158,11 @@ Response Request::sendHttp() {
     HttpRequest request;
     setRequest(request, m_method_type, m_content_type, m_api_path, m_head, m_json_body, m_form_body);
 
-    qDebug() << "请求体： " << request.body();
+    // qDebug() << "Request Headers:";
+    // for (const auto& header : request.base()) {
+    //     qDebug() << QString::fromStdString(header.name_string()) << ": " << QString::fromStdString(header.value());
+    // }
+    qDebug() << u8"请求体： " << request.body();
 
     http::write(socket, request);
 
