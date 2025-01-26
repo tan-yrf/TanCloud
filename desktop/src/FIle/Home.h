@@ -15,6 +15,8 @@ public:
     explicit Home(QWidget *parent = nullptr);
     ~Home();
 
+    void root() const;
+
 private:
     Ui::Home *ui;
 };

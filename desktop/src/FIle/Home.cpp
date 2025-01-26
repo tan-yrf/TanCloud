@@ -12,3 +12,7 @@ Home::~Home()
 {
     delete ui;
 }
+
+void Home::root() const {
+    ui->explorer->cd("");
+}
