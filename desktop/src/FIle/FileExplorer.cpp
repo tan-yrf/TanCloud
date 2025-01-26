@@ -106,6 +106,12 @@ void FileExplorer::mousePressEvent(QMouseEvent *event) {
     return QWidget::mousePressEvent(event);
 }
 
+void FileExplorer::mouseDoubleClickEvent(QMouseEvent *event) {
+    if (event->button() != Qt::LeftButton) {
+        return QWidget::mouseDoubleClickEvent(event);
+    }
+}
+
 bool FileExplorer::isImage(const QString &file_name) const {
     static const QSet<QString> image_extensions = {
         "jpg", "jpeg", "png", "gif", "bmp", "webp", "tiff", "svg"
