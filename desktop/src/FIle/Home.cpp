@@ -17,12 +17,22 @@ void Home::root() const {
     ui->explorer->cd("");
 }
 
-void Home::on_list_clicked() {
-    ui->explorer->setListPattern();
+void Home::on_btn_pattern_clicked() {
+    if (m_pattern == Pattern::List) {
+        ui->explorer->setImagePattern();
+        m_pattern = Pattern::Image;
+        ui->btn_pattern->setIcon(QIcon(":/FIle/cell.svg"));
+        ui->btn_pattern->setToolTip(u8"缩略图");
+    } else if(m_pattern == Pattern::Image) {
+        ui->explorer->setListPattern();
+        m_pattern = Pattern::List;
+        ui->btn_pattern->setIcon(QIcon(":/FIle/list.svg"));
+        ui->btn_pattern->setToolTip(u8"列表");
+    }
 }
 
 
-void Home::on_image_clicked() {
-    ui->explorer->setImagePattern();
+void Home::on_btn_refresh_clicked() {
+    ui->explorer->cd("");
 }
 

@@ -31,5 +31,6 @@
         <file>FIle/file.svg</file>
         <file>FIle/folder.svg</file>
         <file>FIle/image.svg</file>
+        <file>FIle/home.svg</file>
     </qresource>
 </RCC>
