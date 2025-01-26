@@ -1,6 +1,8 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QFileInfo>
+#include <QGridLayout>
+#include <QLayoutItem>
 
 #include "ListItem.h"
 #include "ImageItem.h"
@@ -83,8 +85,8 @@ void Explorer::update() {
         int row = 0;
         int col = 0;
 
-        for (int i = 0; i < m_model->count(); i++) {
-            ImageItem* item = new ImageItem(this, m_model, i);
+        for (int i = 0; i < m_model.count(); i++) {
+            ImageItem* item = new ImageItem(this, &m_model, i);
             m_layout->addWidget(item, row, col);
             col++;
             if (col >= colums) {    // 下一行

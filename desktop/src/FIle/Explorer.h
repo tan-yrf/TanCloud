@@ -19,10 +19,7 @@ public:
     void setListPattern();
     void setImagePattern();
     void check(QPointF position);
-    void refresh()
-    {
-
-    }
+    void refresh();
     void update();
     void cd(const QString& path);
 

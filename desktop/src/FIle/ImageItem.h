@@ -14,7 +14,7 @@ class ImageItem : public QFrame
     Q_OBJECT
 
 public:
-    explicit ImageItem(QWidget *parent = nullptr, Model* model = nullptr);
+    explicit ImageItem(QWidget *parent = nullptr, Model* model = nullptr, int index = -1);
     ~ImageItem();
 
     void check();
