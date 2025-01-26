@@ -12,6 +12,9 @@
 
 #include "Exception.h"
 #include "NetConfig.h"
+#include "UserConfig.h"
+#include "ApiPath.h"
+#include "Request.h"
 
 Login::Login(QWidget *parent)
     : QWidget(parent)
@@ -71,6 +74,7 @@ Login::~Login()
 
 void Login::on_btn_login_clicked()
 {
+    // 修改保存的登录配置
     if (NetConfig::set_net_config(ui->edit_address->text().toStdString()) == false ) {
         QMessageBox::information(this, "服务器地址格式错误", "示例：http://example.com:8080    ");
         return;
@@ -84,6 +88,7 @@ void Login::on_btn_login_clicked()
     QFile file(config_path);
     if (file.exists()) {
         if (file.open(QIODevice::WriteOnly | QIODevice::Text) == false) {
+            qDebug() << u8"系统错误";
             throw Exception(ExceptionType::SystemError);
         }
         QJsonObject obj;
@@ -97,6 +102,30 @@ void Login::on_btn_login_clicked()
         throw Exception(ExceptionType::ConfigError);
     }
 
+    // 尝试登录
+    try {
+        Request request(MethodType::post_method, ContentType::json, ApiPath::c_login);
+        request.m_form_body.insert("name", m_username);
+        request.m_form_body.insert("password", m_password);
+        Response response = request.send();
+        response.showMessage();
 
+        // 登录成功
+        if (response.code == 0) {
+            UserConfig::id = response.body["id"].toString();
+            UserConfig::name = response.body["name"].toString();
+            UserConfig::space = response.body["space"].toInteger();
+            UserConfig::used = response.body["used"].toInteger();
+            UserConfig::token = response.body["token"].toString();
+
+            emit LoginSuccess();
+            this->close();
+        }
+    } catch (Exception e) {
+        qDebug() << e.what();
+        e.showMessage();
+    } catch (...) {
+        qDebug() << u8"未知错误";
+    }
 }
 

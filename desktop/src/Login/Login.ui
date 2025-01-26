@@ -164,6 +164,9 @@ color: rgb(255, 255, 255);</string>
        <property name="text">
         <string>登录</string>
        </property>
+       <property name="autoRepeatDelay">
+        <number>1000</number>
+       </property>
       </widget>
      </item>
     </layout>
@@ -171,6 +174,7 @@ color: rgb(255, 255, 255);</string>
   </layout>
  </widget>
  <resources>
+  <include location="../../resource/icon/icon.qrc"/>
   <include location="../../resource/icon/icon.qrc"/>
  </resources>
  <connections/>
