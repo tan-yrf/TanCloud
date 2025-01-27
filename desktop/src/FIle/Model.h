@@ -11,6 +11,7 @@ public:
     explicit Model();
 
     int count() const;
+    bool indexIsValid(int index) const;
     Item at(int index) const;
     void append(const Item& item);
     void appendList(const QVector<Item>& items);

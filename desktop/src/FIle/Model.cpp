@@ -6,8 +6,16 @@ int Model::count() const {
     return m_items.count();
 }
 
+bool Model::indexIsValid(int index) const {
+    if (index >= 0 && index < m_items.size())
+        return true;
+    return false;
+}
+
 Item Model::at(int index) const {
-    return m_items.at(index);
+    if (indexIsValid(index))
+        return m_items.at(index);
+    return Item();
 }
 
 void Model::append(const Item &item) {
@@ -30,9 +38,9 @@ void Model::clear() {
 }
 
 bool Model::setData(int index, int role, const QVariant &value) {
-    if (index < 0 || index > m_items.count())
-        return false;
-    return m_items[index].setData(role, value);
+    if (indexIsValid(index))
+        return m_items[index].setData(role, value);
+    return false;
 }
 
 void Model::resetAllCheckBoxState() {

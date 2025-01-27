@@ -32,6 +32,10 @@ void ImageItem::check(){
     ui->check_box->setChecked(true);
 }
 
+int ImageItem::index() const {
+    return m_index;
+}
+
 void ImageItem::enterEvent(QEnterEvent *event) {
     ui->check_box->setVisible(true);
 }

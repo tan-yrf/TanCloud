@@ -22,6 +22,10 @@ private slots:
 
     void on_btn_refresh_clicked();
 
+    void on_btn_home_clicked();
+
+    void on_btn_bak_clicked();
+
 private:
     Ui::Home *ui;
     enum Pattern {

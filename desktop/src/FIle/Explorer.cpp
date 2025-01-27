@@ -42,31 +42,6 @@ void Explorer::setImagePattern() {
     update();
 }
 
-void Explorer::check(QPointF position) {
-    QPoint pos = position.toPoint();
-    QPoint local_pos = ui->content->mapFromGlobal(pos);
-
-    QWidget* child = ui->content->childAt(local_pos);
-    if (child == nullptr)
-        return;
-
-    // 向上查找父控件，直到找到 ListItem 或 ImageItem
-    QWidget* current = child;
-    while (current) {
-        ListItem* list_item = qobject_cast<ListItem*>(current);
-        ImageItem* image_item = qobject_cast<ImageItem*>(current);
-
-        if(list_item) {
-            list_item->check();
-            break;
-        } else if(image_item) {
-            image_item->check();
-            break;
-        }
-        current = current->parentWidget();
-    }
-}
-
 void Explorer::refresh() {
     cd(m_current_path);
 }
@@ -84,14 +59,21 @@ void Explorer::update() {
 
     if (m_pattern == Pattern::List) {
         m_layout->setSpacing(5);
+        m_layout->setColumnMinimumWidth(0, 1);
+        m_layout->setColumnStretch(0, 1);
+
         int row = 0;
         for (int i = 0; i < m_model.count(); i++) {
             ListItem* item = new ListItem(this, &m_model, i);
-            m_layout->addWidget(item, row, 0);
+            m_layout->addWidget(item, row, 0, Qt::AlignTop); // 显式设置对齐
             row++;
         }
-        // 添加一个自适应的弹簧
-        m_layout->addItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding), row, 0);
+
+        // 添加弹簧到最后一行的下一行，并指定垂直拉伸
+        m_layout->addItem(
+            new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding),
+            row, 0, 1, 1, Qt::AlignTop
+            );
     }
 
     if (m_pattern == Pattern::Image) {
@@ -161,6 +143,7 @@ void Explorer::cd(const QString &path) {
                 items.append(item);
             }
             m_model.appendList(items);
+            m_current_path = path;
             update();
         }
     } catch(Exception e) {
@@ -168,26 +151,41 @@ void Explorer::cd(const QString &path) {
     }
 }
 
+void Explorer::back() {
+    QFileInfo file_info(m_current_path);
+    m_current_path = file_info.path();
+    cd(m_current_path);
+}
+
 void Explorer::resizeEvent(QResizeEvent *event) {
     update();
 }
 
 void Explorer::mousePressEvent(QMouseEvent *event) {
-    if (event->button() != Qt::RightButton)
-        return QWidget::mousePressEvent(event);
     QPoint pos = ui->view->mapFromParent(event->pos());
     if (ui->view->rect().contains(pos) == false)
         return QWidget::mousePressEvent(event);
 
     QPointF global_pos = event->globalPosition();
-    //m_menu.showAtPosition(global_pos);
     event->accept();
     check(global_pos);
-    return QWidget::mousePressEvent(event);
+
+    if (event->button() == Qt::RightButton) {
+        //m_menu.showAtPosition(global_pos);
+        return QWidget::mousePressEvent(event);
+    }
 }
 
 void Explorer::mouseDoubleClickEvent(QMouseEvent *event) {
+    if (event->button() == Qt::LeftButton) {
+        QPoint pos = ui->view->mapFromParent(event->pos());
+        if (ui->view->rect().contains(pos) == false)
+            return QWidget::mousePressEvent(event);
 
+        QPointF global_pos = event->globalPosition();
+        entery(global_pos);
+        event->accept();
+    }
 }
 
 bool Explorer::isImage(const QString &file_name) const {
@@ -201,4 +199,62 @@ bool Explorer::isImage(const QString &file_name) const {
     return image_extensions.contains(suffix);
 }
 
+void Explorer::check(QPointF position) {
+    QPoint pos = position.toPoint();
+    QPoint local_pos = ui->content->mapFromGlobal(pos);
 
+    QWidget* child = ui->content->childAt(local_pos);
+    if (child == nullptr)
+        return;
+
+    // 向上查找父控件，直到找到 ListItem 或 ImageItem
+    QWidget* current = child;
+    while (current) {
+        ListItem* list_item = qobject_cast<ListItem*>(current);
+        ImageItem* image_item = qobject_cast<ImageItem*>(current);
+
+        if(list_item) {
+            list_item->check();
+            break;
+        } else if(image_item) {
+            image_item->check();
+            break;
+        }
+        current = current->parentWidget();
+    }
+}
+
+void Explorer::entery(QPointF position) {
+    QPoint pos = position.toPoint();
+    QPoint local_pos = ui->content->mapFromGlobal(pos);
+
+    QWidget* child = ui->content->childAt(local_pos);
+    if (child == nullptr)
+        return;
+
+    // 向上查找父控件，直到找到 ListItem 或 ImageItem
+    QWidget* current = child;
+    while (current) {
+        ListItem* list_item = qobject_cast<ListItem*>(current);
+        ImageItem* image_item = qobject_cast<ImageItem*>(current);
+
+        if (list_item || image_item) {
+            int index = -1;
+            if(list_item) {
+                index = list_item->index();
+            } else if(image_item) {
+                index = image_item->index();
+            }
+            if (m_model.indexIsValid(index)) {
+                Item item = m_model.at(index);
+                if (item.data(ItemRole::Type) == FileType::Dir) {
+                    QString path = item.data(ItemRole::Path).toString();
+                    cd(path);
+                }
+            }
+            break;
+        }
+
+        current = current->parentWidget();
+    }
+}

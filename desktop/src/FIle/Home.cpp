@@ -36,3 +36,13 @@ void Home::on_btn_refresh_clicked() {
     ui->explorer->cd("");
 }
 
+
+void Home::on_btn_home_clicked() {
+    ui->explorer->cd("");
+}
+
+
+void Home::on_btn_bak_clicked() {
+    ui->explorer->back();
+}
+

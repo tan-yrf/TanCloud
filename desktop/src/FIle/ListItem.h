@@ -18,7 +18,7 @@ public:
     ~ListItem();
 
     void check();
-
+    int index() const;
 protected:
     void enterEvent(QEnterEvent* event) override;
     void leaveEvent(QEvent* event) override;

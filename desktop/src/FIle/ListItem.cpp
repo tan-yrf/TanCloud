@@ -62,6 +62,10 @@ void ListItem::check() {
     ui->check_box->setChecked(true);
 }
 
+int ListItem::index() const {
+    return m_index;
+}
+
 void ListItem::enterEvent(QEnterEvent *event) {
     ui->check_box->setVisible(true);
 }

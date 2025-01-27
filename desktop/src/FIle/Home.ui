@@ -66,12 +66,12 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QPushButton" name="pushButton_2">
+          <widget class="QPushButton" name="btn_home">
            <property name="text">
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../../resource/icon/icon.qrc">
+            <iconset>
              <normaloff>:/FIle/home.svg</normaloff>:/FIle/home.svg</iconset>
            </property>
            <property name="iconSize">
@@ -83,7 +83,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_3">
+          <widget class="QPushButton" name="btn_bak">
            <property name="text">
             <string>返回上一级</string>
            </property>
@@ -237,7 +237,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../../resource/icon/icon.qrc">
+            <iconset>
              <normaloff>:/FIle/delete.svg</normaloff>:/FIle/delete.svg</iconset>
            </property>
           </widget>
@@ -296,7 +296,7 @@
             <string>上传文件</string>
            </property>
            <property name="icon">
-            <iconset resource="../../resource/icon/icon.qrc">
+            <iconset>
              <normaloff>:/FIle/plus.svg</normaloff>:/FIle/plus.svg</iconset>
            </property>
            <property name="toolButtonStyle">
@@ -322,7 +322,7 @@
             <string>新建文件夹</string>
            </property>
            <property name="icon">
-            <iconset resource="../../resource/icon/icon.qrc">
+            <iconset>
              <normaloff>:/FIle/create_folder.svg</normaloff>:/FIle/create_folder.svg</iconset>
            </property>
            <property name="toolButtonStyle">
@@ -379,7 +379,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../../resource/icon/icon.qrc">
+            <iconset>
              <normaloff>:/FIle/refresh.svg</normaloff>:/FIle/refresh.svg</iconset>
            </property>
            <property name="iconSize">
@@ -405,7 +405,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../../resource/icon/icon.qrc">
+            <iconset>
              <normaloff>:/FIle/list.svg</normaloff>:/FIle/list.svg</iconset>
            </property>
            <property name="iconSize">
@@ -425,7 +425,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../../resource/icon/icon.qrc">
+            <iconset>
              <normaloff>:/FIle/filter.svg</normaloff>:/FIle/filter.svg</iconset>
            </property>
           </widget>
@@ -439,7 +439,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../../resource/icon/icon.qrc">
+            <iconset>
              <normaloff>:/FIle/sort.svg</normaloff>:/FIle/sort.svg</iconset>
            </property>
           </widget>
@@ -470,14 +470,6 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../../resource/icon/icon.qrc"/>
-  <include location="../../resource/icon/icon.qrc"/>
-  <include location="../../resource/icon/icon.qrc"/>
-  <include location="../../resource/icon/icon.qrc"/>
-  <include location="../../resource/icon/icon.qrc"/>
-  <include location="../../resource/icon/icon.qrc"/>
-  <include location="../../resource/icon/icon.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

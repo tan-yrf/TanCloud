@@ -18,16 +18,19 @@ public:
 
     void setListPattern();
     void setImagePattern();
-    void check(QPointF position);
+
     void refresh();
     void update();
     void cd(const QString& path);
+    void back();
 protected:
     void resizeEvent(QResizeEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
     void mouseDoubleClickEvent(QMouseEvent *event) override;
 private:
     bool isImage(const QString& file_name) const;
+    void check(QPointF position);
+    void entery(QPointF position);
 private:
     Ui::Explorer *ui;
     Model m_model;
