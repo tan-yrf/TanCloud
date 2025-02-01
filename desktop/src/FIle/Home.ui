@@ -125,7 +125,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="lab_count">
         <property name="minimumSize">
          <size>
           <width>150</width>
@@ -139,7 +139,7 @@
          </size>
         </property>
         <property name="text">
-         <string>已选中0个文件/文件夹</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -198,7 +198,7 @@
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QCheckBox" name="check_box">
+          <widget class="QCheckBox" name="box_select_all">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>

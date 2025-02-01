@@ -2,7 +2,6 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QFileInfo>
-#include <QGridLayout>
 #include <QLayoutItem>
 
 #include "ListItem.h"
@@ -17,9 +16,10 @@
 
 Explorer::Explorer(QWidget *parent)
     : QFrame(parent)
-    , ui(new Ui::Explorer)
-{
+    , ui(new Ui::Explorer) {
     ui->setupUi(this);
+
+    connect(&m_model, &Model::checkedChanged, this, &Explorer::onCheckedChanged);
 }
 
 Explorer::~Explorer()
@@ -43,6 +43,22 @@ void Explorer::setImagePattern() {
     update();
 }
 
+void Explorer::checkAll(bool state) {
+    m_model.checkAll(state);
+
+    for (int i = 0; i < m_layout->count(); i++) {
+        QLayoutItem* item = m_layout->itemAt(i);
+        if (item && item->widget()) {
+            QWidget* widget = item->widget();
+            if (auto list_item = qobject_cast<ListItem*>(widget)) {
+                list_item->setChecked(state);
+            } else if (auto image_item = qobject_cast<ImageItem*>(widget)) {
+                image_item->setChecked(state);
+            }
+        }
+    }
+}
+
 void Explorer::refresh() {
     cd(m_current_path);
 }
@@ -55,7 +71,7 @@ void Explorer::update() {
     }
 
     // 根据模型和类型重新添加项
-    QGridLayout* m_layout = static_cast<QGridLayout*>(ui->content->layout());
+    m_layout = static_cast<QGridLayout*>(ui->content->layout());
     m_layout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 
     if (m_pattern == Pattern::List) {
@@ -205,7 +221,6 @@ bool Explorer::deleteSelected(QString &message) {
     return false;
 }
 
-
 void Explorer::resizeEvent(QResizeEvent *event) {
     update();
 }
@@ -263,10 +278,10 @@ void Explorer::check(QPointF position) {
         ImageItem* image_item = qobject_cast<ImageItem*>(current);
 
         if(list_item) {
-            list_item->check();
+            list_item->setChecked(true);
             break;
         } else if(image_item) {
-            image_item->check();
+            image_item->setChecked(true);
             break;
         }
         current = current->parentWidget();
@@ -307,3 +322,10 @@ void Explorer::entery(QPointF position) {
         current = current->parentWidget();
     }
 }
+
+void Explorer::onCheckedChanged() {
+    int selected = m_model.checkedCount();
+    int sum = m_model.count();
+    emit countChanged(selected, sum);
+}
+

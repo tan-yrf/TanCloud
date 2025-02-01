@@ -6,6 +6,21 @@ int Model::count() const {
     return m_items.count();
 }
 
+int Model::checkedCount() const {
+    int count = 0;
+    for (const auto& item : m_items) {
+        if (item.data(ItemRole::CheckState).toBool())
+            count++;
+    }
+    return count;
+}
+
+void Model::checkAll(bool state) {
+    for (auto& item : m_items) {
+        item.setData(ItemRole::CheckState, state);
+    }
+}
+
 bool Model::indexIsValid(int index) const {
     if (index >= 0 && index < m_items.size())
         return true;

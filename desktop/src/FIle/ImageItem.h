@@ -19,7 +19,7 @@ public:
     explicit ImageItem(QWidget *parent = nullptr, Model* model = nullptr, int index = -1);
     ~ImageItem();
 
-    void check();
+    void setChecked(bool state);
     int index() const;
 protected:
     void enterEvent(QEnterEvent* event) override;

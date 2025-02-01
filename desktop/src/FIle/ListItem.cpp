@@ -58,8 +58,8 @@ ListItem::~ListItem() {
     delete ui;
 }
 
-void ListItem::check() {
-    ui->check_box->setChecked(true);
+void ListItem::setChecked(bool state) {
+    ui->check_box->setChecked(state);
 }
 
 int ListItem::index() const {
@@ -84,6 +84,7 @@ void ListItem::on_check_box_stateChanged(int state) {
     }
     if (m_model){
         m_model->setData(m_index, ItemRole::CheckState, res);
+        m_model->checkedChanged();
     }
 }
 

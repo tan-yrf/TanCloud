@@ -11,6 +11,7 @@ Home::Home(QWidget *parent)
     , ui(new Ui::Home) {
     ui->setupUi(this);
     connect(ui->explorer, &Explorer::pathChanged, this, &Home::onPathChanged);
+    connect(ui->explorer, &Explorer::countChanged, this, &Home::onCountChanged);
 }
 
 Home::~Home()
@@ -114,6 +115,14 @@ void Home::onPathChanged(QString path) {
         ui->lab_path->setText(path);
 }
 
+void Home::onCountChanged(int selected, int sum) {
+    if (selected == 0){
+        ui->lab_count->setText(" ");
+    } else {
+        ui->lab_count->setText(tr(u8"已选中%1个文件/文件夹").arg(selected));
+    }
+}
+
 void Home::on_create_folder_clicked() {
     bool ok = false;
     QString folder_name;
@@ -164,3 +173,13 @@ void Home::on_btn_delete_clicked() {
         msg.exec();
     }
 }
+
+void Home::on_box_select_all_stateChanged(int state) {
+    qDebug() << state;
+    if (state == 0) {
+        ui->explorer->checkAll(false);
+    } else {
+        ui->explorer->checkAll(true);
+    }
+}
+

@@ -28,8 +28,8 @@ ImageItem::~ImageItem()
     delete ui;
 }
 
-void ImageItem::check(){
-    ui->check_box->setChecked(true);
+void ImageItem::setChecked(bool state) {
+    ui->check_box->setChecked(state);
 }
 
 int ImageItem::index() const {
@@ -53,6 +53,7 @@ void ImageItem::on_check_box_stateChanged(int state) {
     }
     if (m_model){
         m_model->setData(m_index, ItemRole::CheckState, res);
+        m_model->checkedChanged();
     }
 }
 
