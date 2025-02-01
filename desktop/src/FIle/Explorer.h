@@ -24,7 +24,7 @@ public:
     void cd(const QString& path);
     void back();
     bool createFolder(QString& message, const QString& folder_name);
-    bool deleteFileOrFolderComplete(QString& message, const QString& path);
+    bool deleteSelected(QString& message);
 signals:
     void pathChanged(QString path);
 protected:

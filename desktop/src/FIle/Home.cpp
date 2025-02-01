@@ -142,6 +142,7 @@ void Home::on_create_folder_clicked() {
 
 void Home::on_btn_delete_clicked() {
     QMessageBox msg_box;
+    msg_box.setWindowIcon(QIcon(":/ico.svg"));
     msg_box.setWindowTitle(tr("确认删除"));
     msg_box.setText(tr("您确定要彻底删除吗？"));
     msg_box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
@@ -150,8 +151,16 @@ void Home::on_btn_delete_clicked() {
     msg_box.button(QMessageBox::No)->setText(tr("取消"));
     int reply = msg_box.exec();
     if (reply == QMessageBox::Yes) {
+        QString message;
+        ui->explorer->deleteSelected(message);
 
-    } else {
-
+        QMessageBox msg;
+        msg.setWindowIcon(QIcon(":/ico.svg"));
+        msg.setIcon(QMessageBox::Information);
+        msg.setWindowTitle(" ");
+        msg.setText(message);
+        msg.addButton(QMessageBox::Ok);
+        msg.button(QMessageBox::Ok)->hide();
+        msg.exec();
     }
 }

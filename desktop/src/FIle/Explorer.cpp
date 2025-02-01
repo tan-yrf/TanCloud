@@ -1,4 +1,5 @@
 #include <QJsonObject>
+#include <QJsonDocument>
 #include <QJsonArray>
 #include <QFileInfo>
 #include <QGridLayout>
@@ -177,11 +178,20 @@ bool Explorer::createFolder(QString &message, const QString& folder_name) {
     return false;
 }
 
-bool Explorer::deleteFileOrFolderComplete(QString &message, const QString &path) {
+bool Explorer::deleteSelected(QString &message) {
     try {
         Request request(MethodType::post_method, ContentType::json, ApiPath::c_delete_complete);
         request.m_head.insert("Authorization", QString("Bearer ").append(UserConfig::token));
-        request.m_form_body.insert("path", path);
+        QVector<Item> items = m_model.getSelectedItems();
+        QJsonArray paths;
+        for (const auto& item : items) {
+            paths.append(item.data(ItemRole::Path).toString());
+        }
+        QJsonObject obj;
+        obj["paths"] = paths;
+        QJsonDocument doc(obj);
+        QString body = doc.toJson();
+        request.m_json_body = body;
         Response response = request.send();
 
         message = response.message;
@@ -194,6 +204,7 @@ bool Explorer::deleteFileOrFolderComplete(QString &message, const QString &path)
     }
     return false;
 }
+
 
 void Explorer::resizeEvent(QResizeEvent *event) {
     update();
