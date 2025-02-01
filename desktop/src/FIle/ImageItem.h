@@ -1,34 +1,36 @@
 #ifndef IMAGEITEM_H
 #define IMAGEITEM_H
 
-#include "MetaItem.h"
-#include "FileListModel.h"
+#include <QFrame>
+#include <QEnterEvent>
+#include <QEvent>
+
+#include "Model.h"
 
 namespace Ui {
 class ImageItem;
 }
 
-class ImageItem : public MetaItem
+class ImageItem : public QFrame
 {
     Q_OBJECT
 
 public:
-    explicit ImageItem(QWidget *parent = nullptr, FileListModel* model = nullptr, int index = -1);
+    explicit ImageItem(QWidget *parent = nullptr, Model* model = nullptr, int index = -1);
     ~ImageItem();
 
-    int width() const;
     void check();
-
+    int index() const;
 protected:
     void enterEvent(QEnterEvent* event) override;
     void leaveEvent(QEvent* event) override;
 
 private slots:
-    void on_check_box_checkStateChanged(int state);
+    void on_check_box_stateChanged(int arg1);
 
 private:
     Ui::ImageItem *ui;
-    FileListModel* m_model = nullptr;
+    Model* m_model = nullptr;
     int m_index = -1;
 };
 

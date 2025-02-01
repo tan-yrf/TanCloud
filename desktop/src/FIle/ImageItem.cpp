@@ -1,10 +1,8 @@
-#include "FIleItemRole.h"
 #include "ImageItem.h"
 #include "ui_ImageItem.h"
-#include "FileListItem.h"
 
-ImageItem::ImageItem(QWidget *parent, FileListModel *model, int index)
-    : MetaItem(parent)
+ImageItem::ImageItem(QWidget *parent, Model *model, int index)
+    : QFrame(parent)
     , ui(new Ui::ImageItem) {
     ui->setupUi(this);
 
@@ -13,8 +11,8 @@ ImageItem::ImageItem(QWidget *parent, FileListModel *model, int index)
     m_model = model;
     m_index = index;
 
-    FileListItem item = model->at(index);
-    ui->check_box->setChecked(item.data(ItemRole::CheckBox).toBool());
+    Item item = model->at(index);
+    ui->check_box->setChecked(false);
 
     QPixmap pixmap = QPixmap::fromImage(item.data(ItemRole::Icon).value<QImage>()).scaled(ui->image->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     ui->image->setPixmap(pixmap);
@@ -30,12 +28,12 @@ ImageItem::~ImageItem()
     delete ui;
 }
 
-int ImageItem::width() const {
-    return QWidget::width();
+void ImageItem::check(){
+    ui->check_box->setChecked(true);
 }
 
-void ImageItem::check() {
-    ui->check_box->setChecked(true);
+int ImageItem::index() const {
+    return m_index;
 }
 
 void ImageItem::enterEvent(QEnterEvent *event) {
@@ -46,13 +44,15 @@ void ImageItem::leaveEvent(QEvent *event) {
     ui->check_box->setVisible(ui->check_box->checkState());
 }
 
-void ImageItem::on_check_box_checkStateChanged(int state) {
+void ImageItem::on_check_box_stateChanged(int state) {
+    bool res = false;
     if (state == Qt::Checked) {
         ui->check_box->setVisible(true);
-        emit checkBoxStateChanged(true);
     } else {
         ui->check_box->setVisible(false);
-        emit checkBoxStateChanged(false);
+    }
+    if (m_model){
+        m_model->setData(m_index, ItemRole::CheckState, res);
     }
 }
 

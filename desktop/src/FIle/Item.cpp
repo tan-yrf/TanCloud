@@ -1,14 +1,14 @@
-#include "FileListItem.h"
+#include "Item.h"
 
-FileListItem::FileListItem() {}
+Item::Item() {}
 
-QVariant FileListItem::data(int role) const {
+QVariant Item::data(int role) const {
     if (role < 0 || m_data.contains(role) == false)
         return QVariant();
     return m_data[role];
 }
 
-bool FileListItem::setData(int role, const QVariant &value) {
+bool Item::setData(int role, const QVariant &value) {
     if (role < 0 || value.isNull())
         return false;
 

@@ -28,5 +28,9 @@
         <file>FIle/delete.svg</file>
         <file>FIle/download.svg</file>
         <file>FIle/share.svg</file>
+        <file>FIle/file.svg</file>
+        <file>FIle/folder.svg</file>
+        <file>FIle/image.svg</file>
+        <file>FIle/home.svg</file>
     </qresource>
 </RCC>
