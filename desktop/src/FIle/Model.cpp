@@ -48,3 +48,12 @@ void Model::resetAllCheckBoxState() {
         item.setData(ItemRole::CheckState, false);
     }
 }
+
+QVector<Item> Model::getSelectedItems() const {
+    QVector<Item> items;
+    for (const auto& item : m_items) {
+        if (item.data(ItemRole::CheckState).toBool() == true)
+            items.append(item);
+    }
+    return items;
+}

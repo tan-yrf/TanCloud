@@ -145,6 +145,7 @@ void Explorer::cd(const QString &path) {
             m_model.appendList(items);
             m_current_path = path;
             update();
+            emit pathChanged(m_current_path);
         }
     } catch(Exception e) {
         e.showMessage();
@@ -155,6 +156,43 @@ void Explorer::back() {
     QFileInfo file_info(m_current_path);
     m_current_path = file_info.path();
     cd(m_current_path);
+}
+
+bool Explorer::createFolder(QString &message, const QString& folder_name) {
+    try {
+        Request request(MethodType::post_method, ContentType::json, ApiPath::c_create_folder);
+        request.m_head.insert("Authorization", QString("Bearer ").append(UserConfig::token));
+        request.m_form_body.insert("path", m_current_path);
+        request.m_form_body.insert("name", folder_name);
+        Response response = request.send();
+
+        message = response.message;
+        if (response.code == 0) {
+            refresh();
+            return true;
+        }
+    } catch(Exception e) {
+        e.showMessage();
+    }
+    return false;
+}
+
+bool Explorer::deleteFileOrFolderComplete(QString &message, const QString &path) {
+    try {
+        Request request(MethodType::post_method, ContentType::json, ApiPath::c_delete_complete);
+        request.m_head.insert("Authorization", QString("Bearer ").append(UserConfig::token));
+        request.m_form_body.insert("path", path);
+        Response response = request.send();
+
+        message = response.message;
+        if (response.code == 0) {
+            refresh();
+            return true;
+        }
+    } catch (Exception e) {
+        e.showMessage();
+    }
+    return false;
 }
 
 void Explorer::resizeEvent(QResizeEvent *event) {

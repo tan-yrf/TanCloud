@@ -18,6 +18,8 @@ public:
     void clear();
     bool setData(int index, int role, const QVariant& value);
     void resetAllCheckBoxState();
+
+    QVector<Item> getSelectedItems() const;
 signals:
     void dataChanged();
 private:

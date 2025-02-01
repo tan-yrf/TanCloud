@@ -23,6 +23,10 @@ public:
     void update();
     void cd(const QString& path);
     void back();
+    bool createFolder(QString& message, const QString& folder_name);
+    bool deleteFileOrFolderComplete(QString& message, const QString& path);
+signals:
+    void pathChanged(QString path);
 protected:
     void resizeEvent(QResizeEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
