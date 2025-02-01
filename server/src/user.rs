@@ -67,11 +67,11 @@ pub async fn login(user: Json<User>) -> impl IntoResponse {
                     let user_dir = WORK_DIR.join(user_id.to_string());
                     let used = calculate_dir_size(&user_dir);
                     HttpResponse::new(ErrorCode::Success, json!({ 
-                        "id": user_data.id,
+                        "id": user_data.id.map(|id| id.to_string()).unwrap_or_default(), 
                         "name": user_data.name,
-                        "space": user_data.space,
-                        "used": used,
-                        "token": user_id
+                        "space": user_data.space.map(|space| space.to_string()).unwrap_or_default(), 
+                        "used": used.to_string(), 
+                        "token": user_id.to_string() 
                     }))
                 } else {
                     HttpResponse::new(ErrorCode::Unknown, json!({}))
