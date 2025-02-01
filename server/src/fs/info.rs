@@ -92,6 +92,17 @@ fn get_directory_info(root_path: PathBuf, path: PathBuf) -> io::Result<Vec<FileI
                 last_modify_time,
             });
         }
+
+        // 先文件夹，后文件
+        files_info.sort_by(|a, b| {
+            if a.is_dir == b.is_dir {
+                a.name.cmp(&b.name) // 如果类型相同，按名称排序
+            } else if a.is_dir {
+                std::cmp::Ordering::Less // 文件夹在前
+            } else {
+                std::cmp::Ordering::Greater // 文件在后
+            }
+        });
     }
 
     Ok(files_info)
