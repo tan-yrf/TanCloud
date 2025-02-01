@@ -17,7 +17,7 @@ public:
     explicit ListItem(QWidget *parent = nullptr, Model* model = nullptr, int index = -1);
     ~ListItem();
 
-    void check();
+    void setChecked(bool state);
     int index() const;
 protected:
     void enterEvent(QEnterEvent* event) override;

@@ -12,6 +12,7 @@ public:
 
     int count() const;
     int checkedCount() const;
+    void checkAll(bool state);
     bool indexIsValid(int index) const;
     Item at(int index) const;
     void append(const Item& item);
@@ -23,7 +24,7 @@ public:
 
 signals:
     void dataChanged();
-    void countChanged();
+    void checkedChanged();
 private:
     QVector<Item> m_items;
 };

@@ -15,6 +15,12 @@ int Model::checkedCount() const {
     return count;
 }
 
+void Model::checkAll(bool state) {
+    for (auto& item : m_items) {
+        item.setData(ItemRole::CheckState, state);
+    }
+}
+
 bool Model::indexIsValid(int index) const {
     if (index >= 0 && index < m_items.size())
         return true;

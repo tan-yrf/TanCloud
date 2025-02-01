@@ -2,6 +2,7 @@
 #define EXPLORER_H
 
 #include <QFrame>
+#include <QGridLayout>
 
 #include "Model.h"
 namespace Ui {
@@ -18,7 +19,7 @@ public:
 
     void setListPattern();
     void setImagePattern();
-
+    void checkAll(bool state);
     void refresh();
     void update();
     void cd(const QString& path);
@@ -36,9 +37,12 @@ private:
     bool isImage(const QString& file_name) const;
     void check(QPointF position);
     void entery(QPointF position);
+private slots:
+    void onCheckedChanged();
 private:
     Ui::Explorer *ui;
     Model m_model;
+    QGridLayout* m_layout = nullptr;
     QString m_current_path;
     enum Pattern {
         List,

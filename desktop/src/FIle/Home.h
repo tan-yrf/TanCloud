@@ -30,6 +30,7 @@ private slots:
     void on_btn_bak_clicked();
     void on_create_folder_clicked();
     void on_btn_delete_clicked();
+    void on_box_select_all_stateChanged(int state);
 
 private:
     Ui::Home *ui;

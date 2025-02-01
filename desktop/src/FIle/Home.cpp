@@ -173,3 +173,13 @@ void Home::on_btn_delete_clicked() {
         msg.exec();
     }
 }
+
+void Home::on_box_select_all_stateChanged(int state) {
+    qDebug() << state;
+    if (state == 0) {
+        ui->explorer->checkAll(false);
+    } else {
+        ui->explorer->checkAll(true);
+    }
+}
+
