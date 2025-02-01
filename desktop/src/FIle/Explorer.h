@@ -27,6 +27,7 @@ public:
     bool deleteSelected(QString& message);
 signals:
     void pathChanged(QString path);
+    void countChanged(int selected, int sum);
 protected:
     void resizeEvent(QResizeEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;

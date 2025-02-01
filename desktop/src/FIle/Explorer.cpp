@@ -17,9 +17,14 @@
 
 Explorer::Explorer(QWidget *parent)
     : QFrame(parent)
-    , ui(new Ui::Explorer)
-{
+    , ui(new Ui::Explorer) {
     ui->setupUi(this);
+
+    connect(&m_model, &Model::countChanged, [this](){
+        int selected = m_model.checkedCount();
+        int sum = m_model.count();
+        emit countChanged(selected, sum);
+    });
 }
 
 Explorer::~Explorer()
@@ -204,7 +209,6 @@ bool Explorer::deleteSelected(QString &message) {
     }
     return false;
 }
-
 
 void Explorer::resizeEvent(QResizeEvent *event) {
     update();

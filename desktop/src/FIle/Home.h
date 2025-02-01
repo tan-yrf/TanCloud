@@ -21,11 +21,13 @@ private:
     bool isFolderNameValid(const QString& folder_name, QString& error_message);
 
 private slots:
+    void onPathChanged(QString path);
+    void onCountChanged(int selected, int sum);
+private slots:
     void on_btn_pattern_clicked();
     void on_btn_refresh_clicked();
     void on_btn_home_clicked();
     void on_btn_bak_clicked();
-    void onPathChanged(QString path);
     void on_create_folder_clicked();
     void on_btn_delete_clicked();
 

@@ -11,6 +11,7 @@ public:
     explicit Model();
 
     int count() const;
+    int checkedCount() const;
     bool indexIsValid(int index) const;
     Item at(int index) const;
     void append(const Item& item);
@@ -19,8 +20,10 @@ public:
     bool setData(int index, int role, const QVariant& value);
     void resetAllCheckBoxState();
     QVector<Item> getSelectedItems() const;
+
 signals:
     void dataChanged();
+    void countChanged();
 private:
     QVector<Item> m_items;
 };

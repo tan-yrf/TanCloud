@@ -84,6 +84,7 @@ void ListItem::on_check_box_stateChanged(int state) {
     }
     if (m_model){
         m_model->setData(m_index, ItemRole::CheckState, res);
+        m_model->countChanged();
     }
 }
 
