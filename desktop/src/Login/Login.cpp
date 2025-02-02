@@ -114,8 +114,8 @@ void Login::on_btn_login_clicked()
         if (response.code == 0) {
             UserConfig::id = response.body["id"].toString();
             UserConfig::name = response.body["name"].toString();
-            UserConfig::space = response.body["space"].toInteger();
-            UserConfig::used = response.body["used"].toInteger();
+            UserConfig::space = response.body["space"].toString().toLongLong();
+            UserConfig::used = response.body["used"].toString().toLongLong();
             UserConfig::token = response.body["token"].toString();
 
             emit LoginSuccess();
