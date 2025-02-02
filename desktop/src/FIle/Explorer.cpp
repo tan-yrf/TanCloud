@@ -23,8 +23,7 @@ Explorer::Explorer(QWidget *parent)
     connect(&m_model, &Model::checkedChanged, this, &Explorer::onCheckedChanged);
 }
 
-Explorer::~Explorer()
-{
+Explorer::~Explorer() {
     delete ui;
 }
 

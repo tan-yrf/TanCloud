@@ -8,6 +8,7 @@ qt_add_library(File STATIC
     ImageItem.h ImageItem.cpp ImageItem.ui
     ListItem.h ListItem.cpp ListItem.ui
     Model.h Model.cpp
+    Menu.h Menu.cpp Menu.ui
 )
 
 target_link_libraries(File PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Exception Config Network)
