@@ -148,7 +148,7 @@ void Explorer::cd(const QString &path) {
                         item.setData(ItemRole::Type, FileType::Doc);
                     }
                 }
-                item.setData(ItemRole::Size, obj["size"].toInteger());
+                item.setData(ItemRole::Size, obj["size"].toString());
 
                 // 设置图标，暂时没有实现获取图片
                 if (item.data(ItemRole::Type) == FileType::Dir) {
