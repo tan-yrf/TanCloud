@@ -163,6 +163,10 @@ void Explorer::cd(const QString &path) {
             m_current_path = path;
             update();
             emit pathChanged(m_current_path);
+            //qDebug() <<u8"数量" << m_model.count();
+            if (m_model.count() == 0) {
+                emit countChanged(0, 0);
+            }
         }
     } catch(Exception e) {
         e.showMessage();
