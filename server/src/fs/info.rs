@@ -20,9 +20,9 @@ pub struct FileInfo {
     pub path: String,
     pub name: String,
     pub is_dir: bool,
-    pub size: u64,
-    pub create_time: i64,
-    pub last_modify_time: i64,
+    pub size: String,
+    pub create_time: String,
+    pub last_modify_time: String,
 }
 
 #[derive(Deserialize)]
@@ -55,7 +55,7 @@ pub async fn handle_get_directory_info(
 // 将系统时间转换为时间戳
 fn system_time_to_timestamp(time: SystemTime) -> i64 {
     match time.duration_since(UNIX_EPOCH) {
-        Ok(duration) => duration.as_secs() as i64,
+        Ok(duration) => duration.as_millis() as i64, // 转换为毫秒
         Err(_) => 0,
     }
 }
@@ -71,12 +71,12 @@ fn get_directory_info(root_path: PathBuf, path: PathBuf) -> io::Result<Vec<FileI
 
             let file_name = entry.file_name().into_string().unwrap_or_else(|_| String::from("Invalid filename"));
             let is_dir = entry.file_type()?.is_dir();
-            let size = metadata.len();  // 文件大小(字节)
+            let size = metadata.len().to_string();  // 文件大小(字节)
             let create_time = match metadata.created() {
-                Ok(time) => system_time_to_timestamp(time),
-                Err(_) => 0,
+                Ok(time) => system_time_to_timestamp(time).to_string(),
+                Err(_) => 0.to_string(),
             };
-            let last_modify_time = system_time_to_timestamp(metadata.modified()?);
+            let last_modify_time = system_time_to_timestamp(metadata.modified()?).to_string();
 
             let relative_path = entry.path().strip_prefix(root_path.clone())
                 .unwrap_or(entry.path().as_path())
