@@ -109,13 +109,16 @@ void Home::on_btn_bak_clicked() {
 }
 
 void Home::onPathChanged(QString path) {
-    if (path == '.')
+    if (path == '.'){
         ui->lab_path->setText("");
-    else
+    } else {
         ui->lab_path->setText(path);
+    }
+    ui->box_select_all->setChecked(false);
 }
 
 void Home::onCountChanged(int selected, int sum) {
+    //qDebug() << u8"数量改变 selected" << selected << " sum" << sum;
     if (selected == 0){
         ui->lab_count->setText(" ");
     } else {
@@ -175,7 +178,6 @@ void Home::on_btn_delete_clicked() {
 }
 
 void Home::on_box_select_all_stateChanged(int state) {
-    qDebug() << state;
     if (state == 0) {
         ui->explorer->checkAll(false);
     } else {

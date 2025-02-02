@@ -162,7 +162,7 @@ Response Request::sendHttp() {
     // for (const auto& header : request.base()) {
     //     qDebug() << QString::fromStdString(header.name_string()) << ": " << QString::fromStdString(header.value());
     // }
-    qDebug() << u8"请求体： " << request.body();
+    //qDebug() << u8"请求体： " << request.body();
 
     http::write(socket, request);
 
@@ -178,8 +178,8 @@ Response Request::sendHttp() {
         throw Exception(ExceptionType::NetWorkError);
     }
 
-    qDebug() << "响应状态码: " << res.result_int();
-    qDebug() << "响应内容: " << QString::fromStdString(beast::buffers_to_string(res.body().data()));
+    //qDebug() << "响应状态码: " << res.result_int();
+    //qDebug() << "响应内容: " << QString::fromStdString(beast::buffers_to_string(res.body().data()));
     if (res.result_int() != 200) {
         throw Exception(ExceptionType::NetWorkError);
     }
