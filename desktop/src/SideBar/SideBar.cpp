@@ -45,6 +45,8 @@ SideBar::~SideBar() {
 void SideBar::updateSpaceSize() {
     const qint64 used_size = UserConfig::used;
     const qint64 total_size = UserConfig::space;
+    //qDebug() << u8"总空间大小" << total_size;
+    //qDebug() << u8"已经使用 " << used_size;
 
     const qint64 TB = 1024LL * 1024 * 1024 * 1024;
     const qint64 GB = 1024LL * 1024 * 1024;

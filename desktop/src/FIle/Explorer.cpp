@@ -19,6 +19,7 @@ Explorer::Explorer(QWidget *parent)
     , ui(new Ui::Explorer) {
     ui->setupUi(this);
 
+    connect(&m_model, &Model::dataChanged, this, &Explorer::onCheckedChanged);
     connect(&m_model, &Model::checkedChanged, this, &Explorer::onCheckedChanged);
 }
 
@@ -147,7 +148,7 @@ void Explorer::cd(const QString &path) {
                         item.setData(ItemRole::Type, FileType::Doc);
                     }
                 }
-                item.setData(ItemRole::Size, obj["size"].toInteger());
+                item.setData(ItemRole::Size, obj["size"].toString());
 
                 // 设置图标，暂时没有实现获取图片
                 if (item.data(ItemRole::Type) == FileType::Dir) {
@@ -163,10 +164,6 @@ void Explorer::cd(const QString &path) {
             m_current_path = path;
             update();
             emit pathChanged(m_current_path);
-            //qDebug() <<u8"数量" << m_model.count();
-            if (m_model.count() == 0) {
-                emit countChanged(0, 0);
-            }
         }
     } catch(Exception e) {
         e.showMessage();
