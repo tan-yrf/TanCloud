@@ -21,6 +21,9 @@ Explorer::Explorer(QWidget *parent)
 
     connect(&m_model, &Model::dataChanged, this, &Explorer::onCheckedChanged);
     connect(&m_model, &Model::checkedChanged, this, &Explorer::onCheckedChanged);
+    m_menu.setModel(&m_model);
+
+    connect(&m_menu, &Menu::rename, this, &Explorer::onRename);
 }
 
 Explorer::~Explorer() {
@@ -235,7 +238,7 @@ void Explorer::mousePressEvent(QMouseEvent *event) {
     check(global_pos);
 
     if (event->button() == Qt::RightButton) {
-        //m_menu.showAtPosition(global_pos);
+        m_menu.showAtPosition(global_pos);
         return QWidget::mousePressEvent(event);
     }
 }
@@ -327,5 +330,23 @@ void Explorer::onCheckedChanged() {
     int selected = m_model.checkedCount();
     int sum = m_model.count();
     emit countChanged(selected, sum);
+}
+
+void Explorer::onRename(QString name) {
+    QVector<Item> items = m_model.getSelectedItems();
+    if (items.count() != 1)
+        return;
+    try {
+        Request request(MethodType::post_method, ContentType::json, ApiPath::c_rename);
+        request.m_head.insert("Authorization", QString("Bearer ").append(UserConfig::token));
+        request.m_form_body.insert("path", items.at(0).data(ItemRole::Path).toString());
+        request.m_form_body.insert("new_name", name);
+        Response response = request.send();
+        if (response.code == 0) {
+            refresh();
+        }
+    } catch (Exception e) {
+        e.showMessage();
+    }
 }
 
