@@ -32,7 +32,6 @@ ListItem::ListItem(QWidget *parent, Model *model, int index)
     ui->lab_type->setText(type_text);
 
     qint64 size = item.data(ItemRole::Size).toString().toLongLong();
-    qDebug() << size;
     QString size_text;
     const qint64 GB = 1024LL * 1024 * 1024;
     const qint64 MB = 1024LL * 1024;
@@ -49,7 +48,6 @@ ListItem::ListItem(QWidget *parent, Model *model, int index)
         double s = size / GB;
         size_text += QString("%1%2").arg(s, 0, 'f', 1).arg("G");
     }
-    qDebug() << size_text;
     ui->lab_size->setText(size_text);
 
     // 默认隐藏复选框，只有鼠标悬浮和勾选复选框时才显示

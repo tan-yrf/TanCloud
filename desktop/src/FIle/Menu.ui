@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Menu</class>
+ <widget class="QFrame" name="Menu">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>84</width>
+    <height>196</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Frame</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../resource/icon/icon.qrc">
+    <normaloff>:/ico.svg</normaloff>:/ico.svg</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QFrame {
+    background-color: white;
+    border: 1px solid #dcdfe6;  /* 边框颜色 */
+    border-radius: 8px;         /* 圆角 */
+    padding: 10px;  /* 内部间距 */
+}
+
+QPushButton {
+    background-color: transparent;
+    border: none;
+    padding: 5px 10px;
+    font-size: 14px;
+    text-align: left;
+}
+
+QPushButton:hover {
+    background-color: #f4f6fa;  /* 鼠标悬停时背景色 */
+}
+
+QPushButton:pressed {
+    background-color: #e1e4e8;  /* 按下时背景色 */
+}
+</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>5</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QPushButton" name="btn_delete">
+     <property name="text">
+      <string>删除</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line_2">
+     <property name="styleSheet">
+      <string notr="true">border:none;
+background:#e5e6e8;
+</string>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="btn_download">
+     <property name="text">
+      <string>下载</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="btn_share">
+     <property name="text">
+      <string>分享</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="styleSheet">
+      <string notr="true">border:none;
+background:#e5e6e8;
+</string>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="btn_rename">
+     <property name="text">
+      <string>重命名</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="btn_copy">
+     <property name="text">
+      <string>复制到</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="btn_move">
+     <property name="text">
+      <string>移动到</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../../resource/icon/icon.qrc"/>
+  <include location="../../resource/icon/icon.qrc"/>
+  <include location="../../resource/icon/icon.qrc"/>
+  <include location="../../resource/icon/icon.qrc"/>
+  <include location="../../resource/icon/icon.qrc"/>
+  <include location="../../resource/icon/icon.qrc"/>
+  <include location="../../resource/icon/icon.qrc"/>
+ </resources>
+ <connections/>
+</ui>

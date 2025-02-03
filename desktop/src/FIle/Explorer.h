@@ -5,6 +5,7 @@
 #include <QGridLayout>
 
 #include "Model.h"
+#include "Menu.h"
 namespace Ui {
 class Explorer;
 }
@@ -39,6 +40,7 @@ private:
     void entery(QPointF position);
 private slots:
     void onCheckedChanged();
+    void onRename(QString name);
 private:
     Ui::Explorer *ui;
     Model m_model;
@@ -49,6 +51,7 @@ private:
         Image
     };
     Pattern m_pattern = Pattern::List;
+    Menu m_menu;
 };
 
 #endif // EXPLORER_H
