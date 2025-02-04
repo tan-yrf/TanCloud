@@ -187,8 +187,6 @@ void Request::downloadFile(std::function<void (size_t, size_t)> progress, const 
         throw Exception(ExceptionType::NetWorkError);
     } catch (const std::exception& e) {
         throw Exception(ExceptionType::SystemError);
-    } catch(Exception& e){
-        throw e;
     }
 }
 
@@ -366,4 +364,81 @@ void Request::downloadFileHttp(std::function<void (size_t, size_t)> progress, co
 
 void Request::downloadFileHttps(std::function<void (size_t, size_t)> progress, const bool &downloading, const std::string &file_path, const std::string &target, const std::string &host, const std::string &port, const std::string &path) {
 
+    asio::io_context io_context;
+    ssl::context ssl_ctx(ssl::context::tls_client);
+
+    ssl_ctx.set_options(
+        ssl::context::default_workarounds |
+        ssl::context::no_sslv2 |
+        ssl::context::no_sslv3 |
+        ssl::context::no_tlsv1 |
+        ssl::context::no_tlsv1_1
+        );
+    ssl::stream<tcp::socket> socket(io_context, ssl_ctx);
+
+    tcp::resolver resolver(io_context);
+    auto endpoints = resolver.resolve(host, port);
+    boost::asio::connect(socket.lowest_layer(), endpoints);
+    SSL_set_tlsext_host_name(socket.native_handle(), host.c_str());
+    socket.handshake(ssl::stream_base::client);
+
+    http::request<http::empty_body> request{http::verb::get, path, 11};
+    request.set(http::field::host, host);
+    request.set(http::field::user_agent, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0");
+    request.target(target);
+    request.set(http::field::connection, "close");
+
+    http::write(socket, request);
+
+    beast::flat_buffer buffer;
+    http::response_parser<http::dynamic_body> parser;
+    parser.get().set(http::field::connection, "close");
+    parser.body_limit(std::numeric_limits<std::uint64_t>::max());
+
+    // 读取响应头，检查状态码和获取Content_Length
+    http::read_header(socket, buffer, parser);
+    if (parser.get().result() != http::status::ok) {
+        throw Exception(ExceptionType::NetWorkError);
+    }
+    const auto& fields = parser.get().base();
+    auto it = fields.find(http::field::content_length);
+    if (it == fields.end()) {
+        throw Exception(ExceptionType::NetWorkError);
+    }
+    const std::uint64_t content_length = std::stoull(std::string(it->value()));
+    std::cout << "Content Length: " << content_length << " bytes\n";
+
+    std::ofstream file(file_path, std::ios::binary);
+    if (!file) {
+        throw std::runtime_error("Failed to open file for writing");
+    }
+
+    // 分块读取并写入文件
+    size_t total_downloaded = 0;
+    while (parser.is_done() == false) {
+        http::read(socket, buffer, parser);  // 这里直接复用 SSL 流
+        const auto& body_data = parser.get().body().data();
+        for (const auto& chunk : body_data) {
+            file.write(static_cast<const char*>(chunk.data()), chunk.size());
+            total_downloaded += chunk.size();
+
+            if (progress) {
+                progress(content_length, total_downloaded);
+            }
+
+            if (downloading == false) {
+                std::cout << "\nDownload stopped.\n";
+                break;
+            }
+        }
+
+        if (downloading == false) break;
+    }
+    file.close();
+
+    beast::error_code ec;
+    socket.shutdown(ec);
+    if (ec && ec != asio::error::eof && ec != ssl::error::stream_truncated) {
+        throw Exception(ExceptionType::NetWorkError);
+    }
 }
