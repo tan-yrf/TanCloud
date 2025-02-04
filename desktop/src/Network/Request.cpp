@@ -2,7 +2,15 @@
 #include <boost/beast.hpp>
 #include <boost/asio/ssl.hpp>
 
+#include <fstream>
+#include <ctime>
+#include <stdexcept>
+#include <iostream>
+#include <sstream>
+#include <functional>
+
 #include <QFile>
+#include <QDir>
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QDateTime>
@@ -16,8 +24,8 @@ namespace beast = boost::beast;
 namespace ssl = boost::asio::ssl;
 namespace http = boost::beast::http;
 using tcp = boost::asio::ip::tcp;
-using HttpRequest = boost::beast::http::request<boost::beast::http::string_body>;
-using HttpResponse = boost::beast::http::response<boost::beast::http::string_body>;
+using AsioRequest = boost::beast::http::request<boost::beast::http::string_body>;
+using AsioResponse = boost::beast::http::response<boost::beast::http::string_body>;
 
 
 Request::Request(MethodType method_type, ContentType conten_type, std::string api_path) {
@@ -26,7 +34,7 @@ Request::Request(MethodType method_type, ContentType conten_type, std::string ap
     m_api_path = api_path;
 }
 
-void setRequest(HttpRequest& request, MethodType method_type, ContentType content_type, std::string api_path, const QMap<QString, QString>& head, const QString& json_body, const QMap<QString, QString>& form_body) {
+void setRequest(AsioRequest& request, MethodType method_type, ContentType content_type, std::string api_path, const QMap<QString, QString>& head, const QString& json_body, const QMap<QString, QString>& form_body) {
     switch (method_type) {
     case MethodType::post_method:
         request.method(http::verb::post);
@@ -140,6 +148,50 @@ Response Request::send() {
     }
 }
 
+void Request::downloadFile(std::function<void (size_t, size_t)> progress, const bool &downloading, const QUrl &url, const QString &local_folder) {
+    try {
+        if (QDir(local_folder).exists() == false){
+            throw Exception(ExceptionType::FileReadAndWriteError);
+        }
+
+        std::string target = url.toString().toStdString();
+        std::string host = url.host().toStdString();
+        std::string port;
+        std::string path = url.path().toStdString();
+
+        if(url.port() != -1) {
+            port = std::to_string(url.port());
+        } else if(url.scheme() == "http") {             // 如果url中不包含端口信息,设置默认端口80
+            port = "80";
+        } else if(url.scheme() == "https") {            // 如果url中不包含端口信息,设置默认端口443
+            port = "443";
+        }
+
+        QString file_name = QString::fromStdString(path).section('/', -1); // 或者使用 section('\\', -1) 处理 Windows 路径
+        file_name = QUrl::fromPercentEncoding(file_name.toUtf8());
+        QString full_path = QDir(local_folder).filePath(file_name);
+        // qDebug() <<"\n filename:" << file_name << "\n";
+        // qDebug() <<"\n fullepath:" << full_path << "\n";
+        std::string utf8_path = full_path.toLocal8Bit().constData();
+        qDebug() << u8"下载: 文件名" << file_name;
+        qDebug() << u8"下载: 路径" << QString::fromStdString(utf8_path);
+
+        if(url.scheme() == "http") {
+            qDebug() << u8"http下载";
+            downloadFileHttp(progress, downloading, utf8_path, target, host, port, path);
+        } else if(url.scheme() == "https") {
+            qDebug() << u8"https下载";
+            downloadFileHttps(progress, downloading, utf8_path, target, host, port, path);
+        }
+    } catch (const boost::system::system_error& e) {
+        throw Exception(ExceptionType::NetWorkError);
+    } catch (const std::exception& e) {
+        throw Exception(ExceptionType::SystemError);
+    } catch(Exception& e){
+        throw e;
+    }
+}
+
 
 Response Request::sendHttp() {
     asio::io_context io_context;
@@ -155,7 +207,7 @@ Response Request::sendHttp() {
         throw Exception(ExceptionType::ServerConnectError);
     }
 
-    HttpRequest request;
+    AsioRequest request;
     setRequest(request, m_method_type, m_content_type, m_api_path, m_head, m_json_body, m_form_body);
 
     // qDebug() << "Request Headers:";
@@ -216,7 +268,7 @@ Response Request::sendHttps() {
 
     socket.handshake(ssl::stream_base::client);
 
-    HttpRequest request;
+    AsioRequest request;
     setRequest(request, m_method_type, m_content_type, m_api_path, m_head, m_json_body, m_form_body);
 
     http::write(socket, request);
@@ -235,4 +287,83 @@ Response Request::sendHttps() {
 
     Response response(res_str);
     return response;
+}
+
+void Request::downloadFileHttp(std::function<void (size_t, size_t)> progress, const bool &downloading, const std::string &file_path, const std::string &target, const std::string &host, const std::string &port, const std::string &path) {
+    asio::io_context io_context;
+
+    tcp::resolver resolver(io_context);
+    auto endpoints = resolver.resolve(host, port);
+
+    tcp::socket socket(io_context);
+    asio::connect(socket, endpoints);
+
+    AsioRequest request{http::verb::get, path, 11};
+    request.set(http::field::host, host);
+    request.set(http::field::user_agent, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0");
+    request.target(target);
+    request.set(http::field::connection, "close");                  // 请求完成后关闭连接
+
+    http::write(socket, request);
+
+    beast::flat_buffer buffer;
+    http::response_parser<http::dynamic_body> parser;
+    parser.get().set(http::field::connection, "close");
+    parser.body_limit(std::numeric_limits<std::uint64_t>::max());   // 取消主体大小限制
+
+    http::read_header(socket, buffer, parser);
+
+    // 检查状态码
+    if (parser.get().result() != http::status::ok) {
+        throw Exception(ExceptionType::NetWorkError);
+    }
+
+    // 获取原始报头
+    const auto& fields = parser.get().base();
+    auto it = fields.find(http::field::content_length);
+    std::uint64_t content_length = 0;
+    if (it != fields.end()) {
+        content_length = std::stoull(std::string(it->value()));
+        std::cout << "Content Length: " << content_length << " bytes\n";
+    } else {
+        throw Exception(ExceptionType::NetWorkError);
+    }
+
+    // 以二进制模式打开文件以写入响应
+    std::ofstream file(file_path, std::ios::binary);
+    if (!file) {
+        throw std::runtime_error("Failed to open file for writing");
+    }
+    qDebug() << u8"文件打开成功";
+
+    // 流式读取并写入数据
+    size_t total_downloaded = 0;
+    while (parser.is_done() == false) {
+        http::read(socket, buffer, parser);
+        const auto& body_data = parser.get().body().data();
+        for (const auto& buffer : body_data) {
+            file.write(static_cast<const char*>(buffer.data()), buffer.size());
+            total_downloaded += buffer.size();
+
+            if (progress){
+                progress(content_length, total_downloaded);
+            }
+        }
+
+        if (downloading == false) {
+            std::cout << "\nDownload stopped.\n";
+            break;
+        }
+    }
+    file.close();
+
+    beast::error_code ec;
+    socket.shutdown(tcp::socket::shutdown_both, ec);
+    if (ec && ec != asio::error::not_connected) {
+        throw Exception(ExceptionType::NetWorkError);
+    }
+}
+
+void Request::downloadFileHttps(std::function<void (size_t, size_t)> progress, const bool &downloading, const std::string &file_path, const std::string &target, const std::string &host, const std::string &port, const std::string &path) {
+
 }
