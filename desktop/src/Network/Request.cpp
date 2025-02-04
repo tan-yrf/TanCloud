@@ -190,6 +190,20 @@ void Request::downloadFile(std::function<void (size_t, size_t)> progress, const 
     }
 }
 
+void Request::uploadFile(std::function<void (size_t, size_t)> progress, const bool &uploading, const QString &target_folder, const QString &local_file_path) {
+    try {
+        if (NetConfig::request_protocol == "http") {
+            uploadFileHttp(progress, uploading, target_folder, local_file_path);
+        } else if (NetConfig::request_protocol == "https") {
+            uploadFileHttps(progress, uploading, target_folder, local_file_path);
+        } else {
+            throw Exception(ExceptionType::ConfigError);
+        }
+    } catch (...) {
+        throw Exception(ExceptionType::Unknow);
+    }
+}
+
 
 Response Request::sendHttp() {
     asio::io_context io_context;
@@ -441,4 +455,202 @@ void Request::downloadFileHttps(std::function<void (size_t, size_t)> progress, c
     if (ec && ec != asio::error::eof && ec != ssl::error::stream_truncated) {
         throw Exception(ExceptionType::NetWorkError);
     }
+}
+
+void Request::uploadFileHttp(std::function<void (size_t, size_t)> progress, const bool &uploading, const QString &target_folder, const QString &local_file_path) {
+    asio::io_context io_context;
+
+    tcp::resolver resolver(io_context);
+    auto endpoints = resolver.resolve(NetConfig::server_address, NetConfig::port);
+
+    tcp::socket socket(io_context);
+    try {
+        asio::connect(socket, endpoints);
+    } catch(const boost::system::system_error& e) {
+        qDebug() << u8"连接失败";
+        throw Exception(ExceptionType::ServerConnectError);
+    }
+
+    std::ifstream file(local_file_path.toStdString(), std::ios::binary | std::ios::ate);
+    QFileInfo file_info(local_file_path);
+    if (!file){
+        throw std::runtime_error("Failed to open file for reading");
+    }
+    const size_t file_size = file.tellg();
+    file.seekg(0);
+
+    std::string boundary = generateBoundary();
+
+    std::string target_part = "--" + boundary + "\r\n"
+                                                "Content-Disposition: form-data; name=\"target\"\r\n\r\n"
+                              + target_folder.toStdString() + "\r\n";
+    std::string name_part = "--" + boundary + "\r\n"
+                                              "Content-Disposition: form-data; name=\"name\"\r\n\r\n"
+                            + file_info.fileName().toStdString() + "\r\n";
+    std::string size_part = "--" + boundary + "\r\n"
+                                              "Content-Disposition: form-data; name=\"size\"\r\n\r\n"
+                            + std::to_string(file_size) + "\r\n";
+    std::string file_header = "--" + boundary + "\r\n"
+                                                "Content-Disposition: form-data; name=\"file\"; filename=\""
+                              + file_info.fileName().toStdString() + "\"\r\n"
+                                                                     "Content-Type: application/octet-stream\r\n\r\n";
+    std::string end_boundary = "\r\n--" + boundary + "--\r\n";
+
+    const size_t total_content_length =
+        target_part.size() + name_part.size() + size_part.size() +
+        file_header.size() + file_size + end_boundary.size();
+
+    http::request<http::empty_body> header;
+    header.method(http::verb::post);
+    header.target(NetConfig::base_path + m_api_path);
+    header.set(http::field::host, NetConfig::server_address);
+    header.set(http::field::user_agent, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0");
+    header.set(http::field::content_type, "multipart/form-data; boundary=" + boundary);
+    header.set(http::field::content_length, std::to_string(total_content_length));
+
+    http::write(socket, header);
+    asio::write(socket, asio::buffer(target_part));
+    asio::write(socket, asio::buffer(name_part));
+    asio::write(socket, asio::buffer(size_part));
+    asio::write(socket, asio::buffer(file_header));
+
+    // 流式发送文件内容
+    const size_t buffer_size = 1024 * 1024; // 1MB
+    std::vector<char> buffer(buffer_size);
+    size_t total_sent = 0;
+
+    while (uploading && !file.eof()) {
+        file.read(buffer.data(), buffer_size);
+        const size_t bytes_read = file.gcount();
+
+        if (bytes_read > 0) {
+            asio::write(socket, asio::buffer(buffer.data(), bytes_read));
+            total_sent += bytes_read;
+
+            if (progress) {
+                progress(total_content_length, total_sent);
+            }
+        }
+    }
+
+    // 发送结束边界
+    asio::write(socket, asio::buffer(end_boundary));
+
+    beast::flat_buffer response_buffer;
+    http::response<http::dynamic_body> response;
+    http::read(socket, response_buffer, response);
+
+    if (response.result() != http::status::ok) {
+        throw Exception(ExceptionType::NetWorkError);
+    }
+
+    beast::error_code ec;
+    socket.shutdown(tcp::socket::shutdown_both, ec);
+    if (ec && ec != asio::error::not_connected) {
+        throw Exception(ExceptionType::NetWorkError);
+    }
+}
+
+void Request::uploadFileHttps(std::function<void (size_t, size_t)> progress, const bool &uploading, const QString &target_folder, const QString &local_file_path) {
+    asio::io_context io_context;
+    ssl::context ssl_ctx(ssl::context::tls_client);
+    ssl_ctx.set_options(
+        ssl::context::default_workarounds |
+        ssl::context::no_sslv2 |
+        ssl::context::no_sslv3 |
+        ssl::context::no_tlsv1 |
+        ssl::context::no_tlsv1_1
+    );
+    ssl::stream<tcp::socket> socket(io_context, ssl_ctx);
+
+    tcp::resolver resolver(io_context);
+    auto endpoints = resolver.resolve(NetConfig::server_address, NetConfig::port);
+    asio::connect(socket.next_layer(), endpoints);
+
+    SSL_set_tlsext_host_name(socket.native_handle(), NetConfig::server_address.c_str());
+    socket.handshake(ssl::stream_base::client);
+
+    std::ifstream file(local_file_path.toStdString(), std::ios::binary | std::ios::ate);
+    QFileInfo file_info(local_file_path);
+    if (!file) {
+        throw std::runtime_error("Failed to open file for reading");
+    }
+    const size_t file_size = file.tellg();
+    file.seekg(0);
+
+    std::string boundary = generateBoundary();
+
+    std::string target_part = "--" + boundary + "\r\n"
+                                                "Content-Disposition: form-data; name=\"target\"\r\n\r\n"
+                              + target_folder.toStdString() + "\r\n";
+    std::string name_part = "--" + boundary + "\r\n"
+                                              "Content-Disposition: form-data; name=\"name\"\r\n\r\n"
+                            + file_info.fileName().toStdString() + "\r\n";
+    std::string size_part = "--" + boundary + "\r\n"
+                                              "Content-Disposition: form-data; name=\"size\"\r\n\r\n"
+                            + std::to_string(file_size) + "\r\n";
+    std::string file_header = "--" + boundary + "\r\n"
+                                                "Content-Disposition: form-data; name=\"file\"; filename=\""
+                              + file_info.fileName().toStdString() + "\"\r\n"
+                                                                     "Content-Type: application/octet-stream\r\n\r\n";
+    std::string end_boundary = "\r\n--" + boundary + "--\r\n";
+
+    const size_t total_content_length =
+        target_part.size() + name_part.size() + size_part.size() +
+        file_header.size() + file_size + end_boundary.size();
+
+    http::request<http::empty_body> header;
+    header.method(http::verb::post);
+    header.target(NetConfig::base_path + m_api_path);
+    header.set(http::field::host, NetConfig::server_address);
+    header.set(http::field::user_agent, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0");
+    header.set(http::field::content_type, "multipart/form-data; boundary=" + boundary);
+    header.set(http::field::content_length, std::to_string(total_content_length));
+
+    http::write(socket, header);
+    asio::write(socket, asio::buffer(target_part));
+    asio::write(socket, asio::buffer(name_part));
+    asio::write(socket, asio::buffer(size_part));
+    asio::write(socket, asio::buffer(file_header));
+
+    // 流式发送文件内容
+    const size_t buffer_size = 1024 * 1024; // 1MB
+    std::vector<char> buffer(buffer_size);
+    size_t total_sent = 0;
+
+    while (uploading && !file.eof()) {
+        file.read(buffer.data(), buffer_size);
+        const size_t bytes_read = file.gcount();
+
+        if (bytes_read > 0) {
+            asio::write(socket, asio::buffer(buffer.data(), bytes_read));
+            total_sent += bytes_read;
+
+            if (progress) {
+                progress(total_content_length, total_sent);
+            }
+        }
+    }
+    asio::write(socket, asio::buffer(end_boundary));
+
+    // 读取响应
+    beast::flat_buffer response_buffer;
+    http::response<http::dynamic_body> response;
+    http::read(socket, response_buffer, response);
+
+    if (response.result() != http::status::ok) {
+        throw Exception(ExceptionType::NetWorkError);
+    }
+
+    beast::error_code ec;
+    socket.shutdown(ec);
+    if (ec && ec != asio::error::eof && ec != ssl::error::stream_truncated) {
+        throw Exception(ExceptionType::NetWorkError);
+    }
+}
+
+std::string Request::generateBoundary() {
+    auto timestamp = QDateTime::currentMSecsSinceEpoch();
+    std::string boundary = "----WebKitFormBoundary" + QString::number(timestamp).toStdString();
+    return boundary;
 }
