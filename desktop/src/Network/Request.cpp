@@ -148,45 +148,17 @@ Response Request::send() {
     }
 }
 
-void Request::downloadFile(std::function<void (size_t, size_t)> progress, const bool &downloading, const QUrl &url, const QString &local_folder) {
+void Request::downloadFile(std::function<void(size_t, size_t)> progress, const bool& downloading, const QString& target, const QString& save_folder_path) {
     try {
-        if (QDir(local_folder).exists() == false){
-            throw Exception(ExceptionType::FileReadAndWriteError);
+        if (NetConfig::request_protocol == "http") {
+            downloadFileHttp(progress, downloading, target, save_folder_path);
+        } else if (NetConfig::request_protocol == "https") {
+            downloadFileHttps(progress, downloading, target, save_folder_path);
+        } else {
+            throw Exception(ExceptionType::ConfigError);
         }
-
-        std::string target = url.toString().toStdString();
-        std::string host = url.host().toStdString();
-        std::string port;
-        std::string path = url.path().toStdString();
-
-        if(url.port() != -1) {
-            port = std::to_string(url.port());
-        } else if(url.scheme() == "http") {             // 如果url中不包含端口信息,设置默认端口80
-            port = "80";
-        } else if(url.scheme() == "https") {            // 如果url中不包含端口信息,设置默认端口443
-            port = "443";
-        }
-
-        QString file_name = QString::fromStdString(path).section('/', -1); // 或者使用 section('\\', -1) 处理 Windows 路径
-        file_name = QUrl::fromPercentEncoding(file_name.toUtf8());
-        QString full_path = QDir(local_folder).filePath(file_name);
-        // qDebug() <<"\n filename:" << file_name << "\n";
-        // qDebug() <<"\n fullepath:" << full_path << "\n";
-        std::string utf8_path = full_path.toLocal8Bit().constData();
-        qDebug() << u8"下载: 文件名" << file_name;
-        qDebug() << u8"下载: 路径" << QString::fromStdString(utf8_path);
-
-        if(url.scheme() == "http") {
-            qDebug() << u8"http下载";
-            downloadFileHttp(progress, downloading, utf8_path, target, host, port, path);
-        } else if(url.scheme() == "https") {
-            qDebug() << u8"https下载";
-            downloadFileHttps(progress, downloading, utf8_path, target, host, port, path);
-        }
-    } catch (const boost::system::system_error& e) {
-        throw Exception(ExceptionType::NetWorkError);
-    } catch (const std::exception& e) {
-        throw Exception(ExceptionType::SystemError);
+    } catch (...) {
+        throw Exception(ExceptionType::Unknow);
     }
 }
 
@@ -252,7 +224,6 @@ Response Request::sendHttp() {
     return response;
 }
 
-
 Response Request::sendHttps() {
     asio::io_context io_context;
 
@@ -301,19 +272,21 @@ Response Request::sendHttps() {
     return response;
 }
 
-void Request::downloadFileHttp(std::function<void (size_t, size_t)> progress, const bool &downloading, const std::string &file_path, const std::string &target, const std::string &host, const std::string &port, const std::string &path) {
+void Request::downloadFileHttp(std::function<void (size_t, size_t)> progress, const bool &downloading, const QString &target, const QString &save_folder_path) {
     asio::io_context io_context;
 
     tcp::resolver resolver(io_context);
-    auto endpoints = resolver.resolve(host, port);
+    auto endpoints = resolver.resolve(NetConfig::server_address, NetConfig::port);
 
     tcp::socket socket(io_context);
     asio::connect(socket, endpoints);
 
-    AsioRequest request{http::verb::get, path, 11};
-    request.set(http::field::host, host);
+    AsioRequest request;
+    request.method(http::verb::post);
+    request.target(NetConfig::base_path + m_api_path);
+    request.set(http::field::host, NetConfig::server_address);
+    request.version(NetConfig::protocol_version);
     request.set(http::field::user_agent, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0");
-    request.target(target);
     request.set(http::field::connection, "close");                  // 请求完成后关闭连接
 
     http::write(socket, request);
@@ -340,6 +313,9 @@ void Request::downloadFileHttp(std::function<void (size_t, size_t)> progress, co
     } else {
         throw Exception(ExceptionType::NetWorkError);
     }
+
+    QFileInfo file_info(target);
+    std::string file_path = (save_folder_path + QDir::separator() + file_info.fileName()).toStdString();
 
     // 以二进制模式打开文件以写入响应
     std::ofstream file(file_path, std::ios::binary);
@@ -376,8 +352,7 @@ void Request::downloadFileHttp(std::function<void (size_t, size_t)> progress, co
     }
 }
 
-void Request::downloadFileHttps(std::function<void (size_t, size_t)> progress, const bool &downloading, const std::string &file_path, const std::string &target, const std::string &host, const std::string &port, const std::string &path) {
-
+void Request::downloadFileHttps(std::function<void (size_t, size_t)> progress, const bool &downloading, const QString &target, const QString &save_folder_path) {
     asio::io_context io_context;
     ssl::context ssl_ctx(ssl::context::tls_client);
 
@@ -391,16 +366,19 @@ void Request::downloadFileHttps(std::function<void (size_t, size_t)> progress, c
     ssl::stream<tcp::socket> socket(io_context, ssl_ctx);
 
     tcp::resolver resolver(io_context);
-    auto endpoints = resolver.resolve(host, port);
+    auto endpoints = resolver.resolve(NetConfig::server_address, NetConfig::port);
     boost::asio::connect(socket.lowest_layer(), endpoints);
-    SSL_set_tlsext_host_name(socket.native_handle(), host.c_str());
+
+    SSL_set_tlsext_host_name(socket.native_handle(), NetConfig::server_address.c_str());
     socket.handshake(ssl::stream_base::client);
 
-    http::request<http::empty_body> request{http::verb::get, path, 11};
-    request.set(http::field::host, host);
+    AsioRequest request;
+    request.method(http::verb::post);
+    request.target(NetConfig::base_path + m_api_path);
+    request.set(http::field::host, NetConfig::server_address);
+    request.version(NetConfig::protocol_version);
     request.set(http::field::user_agent, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0");
-    request.target(target);
-    request.set(http::field::connection, "close");
+    request.set(http::field::connection, "close");                  // 请求完成后关闭连接
 
     http::write(socket, request);
 
@@ -422,6 +400,8 @@ void Request::downloadFileHttps(std::function<void (size_t, size_t)> progress, c
     const std::uint64_t content_length = std::stoull(std::string(it->value()));
     std::cout << "Content Length: " << content_length << " bytes\n";
 
+    QFileInfo file_info(target);
+    std::string file_path = (save_folder_path + QDir::separator() + file_info.fileName()).toStdString();
     std::ofstream file(file_path, std::ios::binary);
     if (!file) {
         throw std::runtime_error("Failed to open file for writing");

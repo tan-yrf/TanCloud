@@ -28,7 +28,8 @@ public:
     Request(MethodType method_type, ContentType conten_type, std::string api_path);
 
     Response send();
-    void downloadFile(std::function<void(size_t, size_t)> progress, const bool& downloading, const QUrl& url, const QString& local_folder);
+    void downloadFile(std::function<void(size_t, size_t)> progress, const bool& downloading, const QString& target, const QString& save_folder_path);
+
     void uploadFile(std::function<void(size_t, size_t)> progress, const bool& uploading, const QString& target_folder, const QString& local_file_path);
 public:
     // 请求头
@@ -41,8 +42,9 @@ public:
 private:
     Response sendHttp();
     Response sendHttps();
-    void downloadFileHttp(std::function<void(size_t, size_t)> progress, const bool& downloading, const std::string& file_path, const std::string& target, const std::string& host, const std::string& port, const std::string& path);
-    void downloadFileHttps(std::function<void(size_t, size_t)> progress, const bool& downloading, const std::string& file_path, const std::string& target, const std::string& host, const std::string& port, const std::string& path);
+    void downloadFileHttp(std::function<void(size_t, size_t)> progress, const bool& downloading, const QString& target, const QString& save_folder_path);
+    void downloadFileHttps(std::function<void(size_t, size_t)> progress, const bool& downloading, const QString& target, const QString& save_folder_path);
+
     void uploadFileHttp(std::function<void(size_t, size_t)> progress, const bool& uploading, const QString& target_folder, const QString& local_file_path);
     void uploadFileHttps(std::function<void(size_t, size_t)> progress, const bool& uploading, const QString& target_folder, const QString& local_file_path);
 
